@@ -1,4 +1,4 @@
-﻿using Xan.AspNetCore.Mvc.Abstractions;
+﻿using Xan.AspNetCore.Models;
 
 namespace Xan.AspNetCore.Parameter;
 

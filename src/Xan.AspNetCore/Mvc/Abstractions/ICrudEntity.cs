@@ -1,4 +1,6 @@
-﻿namespace Xan.AspNetCore.Mvc.Abstractions;
+﻿using Xan.AspNetCore.Models;
+
+namespace Xan.AspNetCore.Mvc.Abstractions;
 
 public interface ICrudEntity
     : IEntity

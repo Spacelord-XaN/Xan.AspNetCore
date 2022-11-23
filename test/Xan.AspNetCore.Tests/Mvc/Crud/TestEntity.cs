@@ -1,4 +1,5 @@
-﻿using Xan.AspNetCore.Mvc.Abstractions;
+﻿using Xan.AspNetCore.Models;
+using Xan.AspNetCore.Mvc.Abstractions;
 
 namespace Xan.AspNetCore.Tests.Mvc.Crud;
 
