@@ -11,10 +11,15 @@ public sealed class IbanValidator<T>
 {
     private const string _alphabet = "abcdefghijklmnopqrstuvwxyz";
 
-    private static bool IsValid(string input)
+    public static bool IsValid(string? iban)
     {
+        if (string.IsNullOrEmpty(iban))
+        {
+            return false;
+        }
+
         //  https://de.wikipedia.org/wiki/Internationale_Bankkontonummer
-        string trimmed = input.Replace(" ", "", StringComparison.InvariantCultureIgnoreCase);
+        string trimmed = iban.Replace(" ", "", StringComparison.InvariantCultureIgnoreCase);
         if (trimmed.Length < 15 || trimmed.Length > 30)
         {
             return false;
@@ -37,13 +42,7 @@ public sealed class IbanValidator<T>
     }
 
     public override bool IsValid(ValidationContext<T> context, string? iban)
-    {
-        if (!string.IsNullOrEmpty(iban))
-        {
-            return IsValid(iban);
-        }
-        return true;
-    }
+        => IsValid(iban);
 
     public override string Name => "IbanValidator";
 }
