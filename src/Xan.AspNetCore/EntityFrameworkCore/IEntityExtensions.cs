@@ -28,4 +28,16 @@ public static class IEntityExtensions
 
         return iq.OrderBy(entity => entity.Id);
     }
+
+    public static async Task<TResult> SelectByIdAsync<TEntity, TResult>(this IQueryable<TEntity> iq, int id, Func<TEntity, TResult> selector)
+        where TEntity : IEntity
+    {
+        ArgumentNullException.ThrowIfNull(iq);
+        ArgumentNullException.ThrowIfNull(selector);
+
+        return await iq
+            .Where(entity => entity.Id == id)
+            .Select(entity => selector(entity))
+            .FirstAsync();
+    }
 }
