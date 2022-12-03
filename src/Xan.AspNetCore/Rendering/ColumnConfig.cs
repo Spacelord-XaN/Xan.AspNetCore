@@ -8,6 +8,8 @@ public sealed class ColumnConfig<TItem>
 
     public bool HasFooter { get => Footer != null; }
 
+    public bool DoNotBeak { get; set; }
+
     public ColumnAlign Align { get; set; } = ColumnAlign.Left;
 
     public ColumnFooterConfig? Footer { get; set; }
@@ -51,7 +53,10 @@ public sealed class ColumnConfig<TItem>
             style += Width.GetStyle();
         }
         style += Align.GetStyle();
-
+        if (DoNotBeak)
+        {
+            style += "white-space: nowrap;";
+        }
         return style;
     }
 }
