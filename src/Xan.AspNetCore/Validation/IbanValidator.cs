@@ -15,7 +15,7 @@ public sealed class IbanValidator<T>
     {
         if (string.IsNullOrEmpty(iban))
         {
-            return false;
+            return true;
         }
 
         //  https://de.wikipedia.org/wiki/Internationale_Bankkontonummer
