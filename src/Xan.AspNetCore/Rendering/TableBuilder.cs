@@ -61,7 +61,7 @@ public sealed class TableBuilder<TItem>
     private IHtmlContent CreateHeaderCell(ColumnConfig<TItem> config)
     {
         TagBuilder th = _html.Th(TableScope.Col);
-        th.SetStyle(config.GetStyle());
+        th.SetStyle(config.GetHeaderStyle());
         th.InnerHtml.SetHtmlContent(config.Title);
         return th;
     }
