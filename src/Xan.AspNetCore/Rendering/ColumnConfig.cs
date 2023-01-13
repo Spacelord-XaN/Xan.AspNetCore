@@ -57,6 +57,10 @@ public sealed class ColumnConfig<TItem>
         {
             style += "white-space: nowrap;";
         }
+        else
+        {
+            style += "word-wrap: break-word;max-width: 1px;";
+        }
         return style;
     }
 }
