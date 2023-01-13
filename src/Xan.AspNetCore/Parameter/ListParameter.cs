@@ -26,7 +26,7 @@ public class ListParameter
 
     public int? PageSize { get; set; }
 
-    public ObjectState? State { get; set; }
+    public ObjectState? State { get; set; } = ObjectState.Enabled;
 
     public ListParameter ToPage(int pageIndex)
     {
