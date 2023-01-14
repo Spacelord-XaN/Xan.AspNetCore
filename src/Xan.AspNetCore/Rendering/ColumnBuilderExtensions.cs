@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Html;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 
 namespace Xan.AspNetCore.Rendering;
 
 public static class ColumnBuilderExtensions
 {
-    public static IHtmlContent ToHtml(this int? value)
-       => new HtmlString(value.ToString());
-
     public static TableBuilder<TItem> For<TItem>(this ColumnBuilder<TItem> builder, Func<TItem, int?> getInt)
     {
         ArgumentNullException.ThrowIfNull(builder);
