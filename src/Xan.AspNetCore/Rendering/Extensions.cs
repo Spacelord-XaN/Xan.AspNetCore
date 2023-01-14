@@ -5,8 +5,17 @@ namespace Xan.AspNetCore.Rendering;
 
 public static class Extensions
 {
-    public static IHtmlContent ToHtml(this int? value)
+    public static IHtmlContent ToHtml(this int value)
         => new HtmlString(value.ToString());
+
+    public static IHtmlContent ToHtml(this int? value)
+    {
+        if (value.HasValue)
+        {
+            return ToHtml(value.Value);
+        }
+        return new HtmlString(string.Empty);
+    }
 
     public static IHtmlContent ToHtml(this LocalizedString localizedString)
     {
