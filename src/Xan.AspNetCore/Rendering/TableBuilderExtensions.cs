@@ -98,7 +98,8 @@ public static class TableBuilderExtensions
         ColumnConfig<TItem> config = new()
         {
             Width = width ?? throw new ArgumentNullException(nameof(width)),
-            Title = title.ToHtml()
+            Title = title.ToHtml(),
+            DoNotBeak = true
         };
         config.SetContent(item =>
         {
