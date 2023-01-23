@@ -1,27 +1,34 @@
 ﻿using Microsoft.AspNetCore.Html;
+using Microsoft.Extensions.Localization;
 
 namespace Xan.AspNetCore.Rendering;
 
-public sealed class FooterBuilder<TItem>
+public sealed class FooterBuilder
 {
-    private readonly ColumnFooterConfig _config;
-    private readonly ColumnBuilder<TItem> _columnBuilder;
+    private readonly ColumnFooterConfig _config = new();
 
-    public FooterBuilder(ColumnFooterConfig config, ColumnBuilder<TItem> columnBuilder)
+    public FooterBuilder(IHtmlFactory html, IStringLocalizer localizer)
     {
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-        _columnBuilder = columnBuilder ?? throw new ArgumentNullException(nameof(columnBuilder));
+        Html = html ?? throw new ArgumentNullException(nameof(html));
+        Localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
     }
 
-    public FooterBuilder<TItem> Align(ColumnAlign align)
+    public IHtmlFactory Html { get; }
+
+    public IStringLocalizer Localizer { get; }
+
+    public FooterBuilder Align(ColumnAlign align)
     {
         _config.Align = align;
         return this;
     }
 
-    public ColumnBuilder<TItem> For(IHtmlContent content)
+    public ColumnFooterConfig Build()
+        => _config;
+
+    public FooterBuilder For(IHtmlContent content)
     {
         _config.Content = content ?? throw new ArgumentNullException(nameof(content));
-        return _columnBuilder;
+        return this;
     }
 }

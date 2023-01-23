@@ -1,20 +1,24 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 
 namespace Xan.AspNetCore.Rendering;
 
-public sealed class TableBuilder<TItem>
-    : List<ColumnConfig<TItem>>
+public class TableBuilder<T>
+    : List<ColumnConfig<T>>
 {
-    private readonly IEnumerable<TItem> _items;
+    private readonly IEnumerable<T> _items;
 
-    public TableBuilder(IEnumerable<TItem> items, IHtmlFactory html)
+    public TableBuilder(IEnumerable<T> items, IHtmlFactory html, IStringLocalizer localizer)
     {
         _items = items ?? throw new ArgumentNullException(nameof(items));
         Html = html ?? throw new ArgumentNullException(nameof(html));
+        Localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
     }
 
     public IHtmlFactory Html { get; }
+
+    public IStringLocalizer Localizer { get; }
 
     public IHtmlContent Build()
     {
@@ -35,18 +39,24 @@ public sealed class TableBuilder<TItem>
         return table;
     }
 
-    public ColumnBuilder<TItem> Column()
+    public TableBuilder<T> Column(Action<ColumnBuilder<T>> configureColumn)
     {
-        ColumnConfig<TItem> config = new();
-        Add(config);
-        return new(config, this);
+        ArgumentNullException.ThrowIfNull(configureColumn);
+
+        ColumnBuilder<T> builder = new(Html, Localizer);
+        configureColumn(builder);
+        Add(builder.Build());
+        return this;
     }
 
-    public ColumnBuilder<TItem> Column(int index)
+    public TableBuilder<T> Column(int index, Action<ColumnBuilder<T>> configureColumn)
     {
-        ColumnConfig<TItem> config = new();
-        Insert(index, config);
-        return new(config, this);
+        ArgumentNullException.ThrowIfNull(configureColumn);
+
+        ColumnBuilder<T> builder = new(Html, Localizer);
+        configureColumn(builder);
+        Insert(index, builder.Build());
+        return this;
     }
 
     private IHtmlContent CreateHeader()
@@ -65,7 +75,7 @@ public sealed class TableBuilder<TItem>
     private IHtmlContent CreateHeaderCells()
     {
         HtmlContentBuilder cells = new();
-        foreach (ColumnConfig<TItem> config in this)
+        foreach (ColumnConfig<T> config in this)
         {
             IHtmlContent cell = CreateHeaderCell(config);
             cells.AppendHtml(cell);
@@ -73,7 +83,7 @@ public sealed class TableBuilder<TItem>
         return cells;
     }
 
-    private IHtmlContent CreateHeaderCell(ColumnConfig<TItem> config)
+    private IHtmlContent CreateHeaderCell(ColumnConfig<T> config)
     {
         TagBuilder th = Html.Th(TableScope.Col);
         th.SetStyle(config.GetHeaderStyle());
@@ -86,7 +96,7 @@ public sealed class TableBuilder<TItem>
         TagBuilder tBody = Html.TBody();
 
         int index = 0;
-        foreach (TItem item in _items)
+        foreach (T item in _items)
         {
             if (item == null)
             {
@@ -104,10 +114,10 @@ public sealed class TableBuilder<TItem>
         return tBody;
     }
 
-    private IHtmlContent CreateBodyCells(int index, TItem item)
+    private IHtmlContent CreateBodyCells(int index, T item)
     {
         HtmlContentBuilder cells = new();
-        foreach (ColumnConfig<TItem> config in this)
+        foreach (ColumnConfig<T> config in this)
         {
             IHtmlContent cell = CreateBodyCell(index, item, config);
             cells.AppendHtml(cell);
@@ -115,7 +125,7 @@ public sealed class TableBuilder<TItem>
         return cells;
     }
 
-    private IHtmlContent CreateBodyCell(int index, TItem item, ColumnConfig<TItem> config)
+    private IHtmlContent CreateBodyCell(int index, T item, ColumnConfig<T> config)
     {
         TagBuilder td = Html.Td(TableScope.None);
         td.SetStyle(config.GetStyle());
@@ -127,7 +137,7 @@ public sealed class TableBuilder<TItem>
     private IHtmlContent CreateFooter()
     {
         TagBuilder tr = Html.Tr();
-        foreach (ColumnConfig<TItem> config in this)
+        foreach (ColumnConfig<T> config in this)
         {
             tr.InnerHtml.AppendHtml(GetFooter(config));
         }
@@ -138,7 +148,7 @@ public sealed class TableBuilder<TItem>
         return tFoot;
     }
 
-    private IHtmlContent GetFooter(ColumnConfig<TItem> config)
+    private IHtmlContent GetFooter(ColumnConfig<T> config)
     {
         TagBuilder th = Html.Td(TableScope.Col);
         if (config.Footer != null)

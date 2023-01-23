@@ -8,7 +8,7 @@ public sealed class ColumnConfig<TItem>
 
     public bool HasFooter { get => Footer != null; }
 
-    public bool DoNotBeak { get; set; }
+    public bool BreakText { get; set; }
 
     public ColumnAlign Align { get; set; } = ColumnAlign.Left;
 
@@ -65,13 +65,13 @@ public sealed class ColumnConfig<TItem>
             style += Width.GetStyle();
         }
         style += Align.GetStyle();
-        if (DoNotBeak)
+        if (BreakText)
         {
-            style += "white-space: nowrap;";
+            style += "word-wrap: break-word;max-width: 1px;";
         }
         else
         {
-            style += "word-wrap: break-word;max-width: 1px;";
+            style += "white-space: nowrap;";
         }
         return style;
     }

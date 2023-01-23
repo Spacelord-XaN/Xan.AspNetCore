@@ -46,6 +46,8 @@ public interface IHtmlFactory
 
     TagBuilder Table();
 
+    TableBuilder<T> Table<T>(IEnumerable<T> items);
+
     TagBuilder TBody();
 
     TagBuilder Td(TableScope scope);

@@ -8,7 +8,7 @@ public class Div
     [Fact]
     public void ReturnsHtml()
     {
-        DefaultHtmlFactory sut = new();
+        DefaultHtmlFactory sut = new(Mockups.StringLocalizer());
 
         TagBuilder div = sut.Div();
         div.Should().Html("<div></div>");

@@ -1,67 +1,74 @@
 ﻿using Microsoft.AspNetCore.Html;
+using Microsoft.Extensions.Localization;
 
 namespace Xan.AspNetCore.Rendering;
 
-public sealed class ColumnBuilder<TItem>
+public sealed class ColumnBuilder<T>
 {
-    private readonly ColumnConfig<TItem> _config;
-    private readonly TableBuilder<TItem> _tableBuidler;
+    private readonly ColumnConfig<T> _config = new();
 
-    public ColumnBuilder(ColumnConfig<TItem> config, TableBuilder<TItem> tableBuidler)
+    public ColumnBuilder(IHtmlFactory html, IStringLocalizer localizer)
     {
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-        _tableBuidler = tableBuidler ?? throw new ArgumentNullException(nameof(tableBuidler));
+        Html = html ?? throw new ArgumentNullException(nameof(html));
+        Localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
     }
 
-    public IHtmlFactory Html { get => _tableBuidler.Html; }
+    public IHtmlFactory Html { get; }
 
-    public ColumnBuilder<TItem> Align(ColumnAlign align)
+    public IStringLocalizer Localizer { get; }
+
+    public ColumnBuilder<T> Align(ColumnAlign align)
     {
         _config.Align = align;
         return this;
     }
 
-    public ColumnBuilder<TItem> AutoWidth()
+    public ColumnBuilder<T> AutoWidth()
     {
         _config.Width = Width.Auto;
         return this;
     }
 
-    public ColumnBuilder<TItem> DoNotBreak()
+    public ColumnConfig<T> Build()
+        => _config;
+
+    public ColumnBuilder<T> BreakText()
     {
-        _config.DoNotBeak = true;
+        _config.BreakText = true;
         return this;
     }
 
-    public TableBuilder<TItem> For(Func<TItem, IHtmlContent> getContent)
+    public ColumnBuilder<T> For(Func<T, IHtmlContent> getContent)
     {
         ArgumentNullException.ThrowIfNull(getContent);
 
         _config.SetContent(getContent);
-        return _tableBuidler;
+        return this;
     }
 
-    public TableBuilder<TItem> For(Func<int, TItem, IHtmlContent> getContent)
+    public ColumnBuilder<T> For(Func<int, T, IHtmlContent> getContent)
     {
         ArgumentNullException.ThrowIfNull(getContent);
 
         _config.SetContent(getContent);
-        return _tableBuidler;
+        return this;
     }
 
-    public FooterBuilder<TItem> Footer()
+    public ColumnBuilder<T> Footer(Action<FooterBuilder> configureFooter)
     {
-        _config.Footer = new ColumnFooterConfig();
-        return new(_config.Footer, this);
+        FooterBuilder builder = new(Html, Localizer);
+        configureFooter(builder);
+        _config.Footer = builder.Build();
+        return this;
     }
 
-    public ColumnBuilder<TItem> PercentWidth(int percentage)
+    public ColumnBuilder<T> PercentWidth(int percentage)
     {
         _config.Width = Width.Percent(percentage);
         return this;
     }
 
-    public ColumnBuilder<TItem> Title(IHtmlContent title)
+    public ColumnBuilder<T> Title(IHtmlContent title)
     {
         _config.Title = title ?? throw new ArgumentNullException(nameof(title));
         return this;

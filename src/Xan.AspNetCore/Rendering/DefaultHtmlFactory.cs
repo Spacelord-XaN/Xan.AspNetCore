@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using System.Globalization;
 
 namespace Xan.AspNetCore.Rendering;
@@ -7,6 +8,14 @@ namespace Xan.AspNetCore.Rendering;
 public class DefaultHtmlFactory
     : IHtmlFactory
 {
+
+    private readonly IStringLocalizer _stringLocalizer;
+    
+    public DefaultHtmlFactory(IStringLocalizer stringLocalizer)
+    {
+        _stringLocalizer = stringLocalizer ?? throw new ArgumentNullException(nameof(stringLocalizer));
+    }
+
     public virtual TagBuilder CheckBox(string name, bool value)
     {
         ArgumentNullException.ThrowIfNull(name);
@@ -198,6 +207,13 @@ public class DefaultHtmlFactory
 
     public virtual TagBuilder Table()
         => TagBuilder("table");
+
+    public TableBuilder<T> Table<T>(IEnumerable<T> items)
+    {
+        ArgumentNullException.ThrowIfNull(items);
+
+        return new TableBuilder<T>(items, this, _stringLocalizer);
+    }
 
     public virtual TagBuilder TBody()
         => TagBuilder("tbody");

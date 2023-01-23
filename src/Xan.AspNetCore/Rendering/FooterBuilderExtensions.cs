@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.Localization;
-
-namespace Xan.AspNetCore.Rendering;
+﻿namespace Xan.AspNetCore.Rendering;
 
 public static class FooterBuilderExtensions
 {
-    public static ColumnBuilder<TItem> For<TItem>(this FooterBuilder<TItem> builder, LocalizedString text)
+    public static FooterBuilder For(this FooterBuilder builder, string text)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(text);
