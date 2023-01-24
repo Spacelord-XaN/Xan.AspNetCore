@@ -9,6 +9,8 @@ public interface IHtmlFactory
 
     TagBuilder CheckBox(string name, bool value);
 
+    TagBuilder DateInput(string name, DateOnly value, bool autoFocus = false);
+    
     TagBuilder DateInput(string name, DateTime value, bool autoFocus = false);
 
     TagBuilder Div();

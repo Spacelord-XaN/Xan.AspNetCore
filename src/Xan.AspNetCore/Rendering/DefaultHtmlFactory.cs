@@ -29,13 +29,22 @@ public class DefaultHtmlFactory
         return input;
     }
 
+    public virtual TagBuilder DateInput(string name, DateOnly value, bool autoFocus = false)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(name);
+
+        string stringValue = value.ToString("yyyy-MM-dd");
+        return DateInput(name, stringValue, autoFocus);
+    }
+
     public virtual TagBuilder DateInput(string name, DateTime value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(name);
 
         string stringValue = value.ToString("yyyy-MM-dd");
-        return Input("date", name, stringValue, autoFocus);
+        return DateInput(name, stringValue, autoFocus);
     }
 
     public virtual TagBuilder Div()
@@ -254,6 +263,9 @@ public class DefaultHtmlFactory
 
     public virtual TagBuilder Tr()
         => TagBuilder("tr");
+
+    private TagBuilder DateInput(string name, string stringValue, bool autoFocus)
+       => Input("date", name, stringValue, autoFocus);
 
     private TagBuilder TableCell(string tag, TableScope scope)
     {
