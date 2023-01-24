@@ -261,6 +261,15 @@ public class DefaultHtmlFactory
     public virtual TagBuilder Th(TableScope scope)
         => TableCell("th", scope);
 
+    public virtual TagBuilder TimeInput(string name, TimeOnly value, bool autoFocus = false)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(name);
+
+        string stringValue = value.ToString("HH:mm");
+        return Input("time", name, stringValue, autoFocus);
+    }
+
     public virtual TagBuilder Tr()
         => TagBuilder("tr");
 

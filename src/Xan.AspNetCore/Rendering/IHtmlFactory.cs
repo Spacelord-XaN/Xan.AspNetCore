@@ -67,5 +67,7 @@ public interface IHtmlFactory
 
     TagBuilder Th(TableScope scope);
 
+    TagBuilder TimeInput(string name, TimeOnly value, bool autoFocus = false);
+
     TagBuilder Tr();
 }
