@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Localization;
 using Xan.AspNetCore.Mvc.Abstractions;
 using Xan.AspNetCore.Parameter;
 using Xan.Extensions.Collections.Generic;
@@ -17,7 +16,7 @@ public sealed class CrudListModel<TEntity, TListParameter>
 
     private readonly CreateTableDelegate _createTableAsync;
 
-    public CrudListModel(IPaginatedList<CrudItemModel<TEntity>> items, TListParameter parameter, CreateTableDelegate createTableAsync, ICrudRouter<TEntity> router, LocalizedString listTitle, LocalizedString createText)
+    public CrudListModel(IPaginatedList<CrudItemModel<TEntity>> items, TListParameter parameter, CreateTableDelegate createTableAsync, ICrudRouter<TEntity> router, string listTitle, string createText)
         : base(items)
     {
         _createTableAsync = createTableAsync;
@@ -35,9 +34,9 @@ public sealed class CrudListModel<TEntity, TListParameter>
 
     public ICrudRouter<TEntity> Router { get; }
 
-    public LocalizedString ListTitle { get; }
+    public string ListTitle { get; }
 
-    public LocalizedString CreateText { get; }
+    public string CreateText { get; }
 
     public async Task<IHtmlContent> TableAsync(ViewContext viewContext)
     {

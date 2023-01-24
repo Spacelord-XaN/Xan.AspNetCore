@@ -13,7 +13,7 @@ public sealed class CrudModel<TEntity>
 
     private readonly CreateEditorDelegate _createEditorAsync;
 
-    public CrudModel(TEntity entity, CreateEditorDelegate createEditorAsync, LocalizedString title)
+    public CrudModel(TEntity entity, CreateEditorDelegate createEditorAsync, string title)
     {
         Entity = entity ?? throw new ArgumentNullException(nameof(entity));
         _createEditorAsync = createEditorAsync ?? throw new ArgumentNullException(nameof(createEditorAsync));
@@ -22,7 +22,7 @@ public sealed class CrudModel<TEntity>
 
     public TEntity Entity { get; }
 
-    public LocalizedString Title { get; }
+    public string Title { get; }
 
     public async Task<IHtmlContent> EditorAsync(ViewContext viewContext)
     {

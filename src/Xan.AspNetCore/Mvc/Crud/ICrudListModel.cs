@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Localization;
 using Xan.AspNetCore.Parameter;
 using Xan.Extensions.Collections;
 
@@ -13,9 +12,9 @@ public interface ICrudListModel
 
     ListParameter Parameter { get; }    
 
-    LocalizedString ListTitle { get; }
+    string ListTitle { get; }
 
-    LocalizedString CreateText { get; }
+    string CreateText { get; }
 
     Task<IHtmlContent> TableAsync(ViewContext viewContext);
 }

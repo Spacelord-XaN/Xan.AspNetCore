@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Localization;
 using Xan.AspNetCore.Mvc.Abstractions;
 using Xan.AspNetCore.Parameter;
 using Xan.Extensions.Collections.Generic;
@@ -18,11 +17,11 @@ public abstract class AbstractCrudModelFactory<TEntity>
 
     protected ICrudRouter<TEntity> Router { get; }
 
-    protected abstract LocalizedString CreateTitle { get; }
+    protected abstract string CreateTitle { get; }
 
-    protected abstract LocalizedString EditTitle { get; }
+    protected abstract string EditTitle { get; }
 
-    protected abstract LocalizedString ListTitle { get; }
+    protected abstract string ListTitle { get; }
 
     public async Task<ICrudModel> CreateModelAsync(TEntity entity)
     {
