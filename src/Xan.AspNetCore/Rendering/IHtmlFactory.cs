@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 
 namespace Xan.AspNetCore.Rendering;
 
 public interface IHtmlFactory
 {
+    IStringLocalizer Localizer { get; }
+
     TagBuilder CheckBox(string name, bool value);
 
     TagBuilder DateInput(string name, DateTime value, bool autoFocus = false);

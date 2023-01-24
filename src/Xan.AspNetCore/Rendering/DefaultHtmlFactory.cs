@@ -8,13 +8,12 @@ namespace Xan.AspNetCore.Rendering;
 public class DefaultHtmlFactory
     : IHtmlFactory
 {
-
-    private readonly IStringLocalizer _stringLocalizer;
-    
     public DefaultHtmlFactory(IStringLocalizer stringLocalizer)
     {
-        _stringLocalizer = stringLocalizer ?? throw new ArgumentNullException(nameof(stringLocalizer));
+        Localizer = stringLocalizer ?? throw new ArgumentNullException(nameof(stringLocalizer));
     }
+
+    public IStringLocalizer Localizer { get; }
 
     public virtual TagBuilder CheckBox(string name, bool value)
     {
@@ -212,7 +211,7 @@ public class DefaultHtmlFactory
     {
         ArgumentNullException.ThrowIfNull(items);
 
-        return new TableBuilder<T>(items, this, _stringLocalizer);
+        return new TableBuilder<T>(items, this, Localizer);
     }
 
     public virtual TagBuilder TBody()
