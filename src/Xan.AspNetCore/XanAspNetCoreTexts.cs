@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using Xan.AspNetCore.Models;
 using Xan.AspNetCore.Mvc.Abstractions;
 using Xan.AspNetCore.Mvc.Crud;
@@ -49,4 +50,22 @@ public static class XanAspNetCoreTexts
             ObjectState.Enabled => Enabled,
             _ => throw new UnreachableException(),
         };
+
+    public static IEnumerable<string> GetTranslationKeys()
+    {
+        Type xanAspNetCoreType = typeof(XanAspNetCoreTexts);
+        foreach (FieldInfo field in xanAspNetCoreType.GetFields(BindingFlags.Static | BindingFlags.Public))
+        {
+            if (field.Name == nameof(Prefix))
+            {
+                continue;
+            }
+            if (field.GetValue(null) is not string key)
+            {
+                continue;
+            }
+
+            yield return key;
+        }
+    }
 }
