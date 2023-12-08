@@ -9,6 +9,7 @@ public interface IHtmlFactory
 
     IInputBuilder CheckBox(string name, bool value);
 
+    IInputBuilder DataList(string name, string? value, ISet<string?> values, bool autoFocus = false);
 
     IInputBuilder DateInput(string name, DateOnly value, bool autoFocus = false);
 

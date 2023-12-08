@@ -29,6 +29,31 @@ public class DefaultHtmlFactory
         return input;
     }
 
+    public IInputBuilder DataList(string name, string? value, ISet<string?> values, bool autoFocus = false)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(values);
+
+        HtmlContentBuilder result = new();
+
+        string dataListName = $"{name}Options";
+
+        IInputBuilder input = TextInput(name, value, autoFocus: autoFocus);
+        input.Attributes.Add("list", Id(dataListName));
+
+        TagBuilder dataList = TagBuilder("datalist", name: dataListName);
+        foreach (string? valueItem in values)
+        {
+            TagBuilder option = Option(valueItem);
+            dataList.InnerHtml.AppendHtml(option);
+        }
+
+        result.AppendHtml(input);
+        result.AppendHtml(dataList);
+
+        return new DataListInputBuilder(input, result);
+    }
+
     public virtual IInputBuilder DateInput(string name, DateOnly value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(value);

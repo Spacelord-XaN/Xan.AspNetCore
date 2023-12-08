@@ -71,6 +71,18 @@ public class DefaultBoostrapHtmlFactory
         return div;
     }
 
+    public TagBuilder DataListField(string name, string? value, ISet<string?> values, string title, bool autoFocus = false)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(values);
+        ArgumentNullException.ThrowIfNull(title);
+
+        IInputBuilder input = DataList(name, value, values, autoFocus: autoFocus);
+        input.AddCssClass("form-control");
+
+        return InputField(name, input, title);
+    }
+
     public TagBuilder DateInputField(string name, DateOnly value, string title, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(name);

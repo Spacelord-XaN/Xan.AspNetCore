@@ -10,6 +10,8 @@ public interface IBootstrapHtmlFactory
 {
     TagBuilder CheckBoxField(string name, bool value, string title);
 
+    TagBuilder DataListField(string name, string? value, ISet<string?> values, string title, bool autoFocus = false);
+
     TagBuilder DateInputField(string name, DateOnly value, string title, bool autoFocus = false);
 
     TagBuilder DateInputField(string name, DateTime value, string title, bool autoFocus = false);
