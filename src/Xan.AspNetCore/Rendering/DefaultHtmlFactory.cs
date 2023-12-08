@@ -153,7 +153,6 @@ public class DefaultHtmlFactory
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(items);
-        ArgumentNullException.ThrowIfNull(value);
 
         TagBuilder select = TagBuilder("select", name: name);
         if (autoFocus)

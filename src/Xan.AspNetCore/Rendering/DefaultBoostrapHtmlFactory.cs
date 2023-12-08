@@ -168,7 +168,6 @@ public class DefaultBoostrapHtmlFactory
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(items);
-        ArgumentNullException.ThrowIfNull(value);
 
         IInputBuilder select = base.Select(name, value, items, submitOnChange, autoFocus);
         select.AddCssClass("form-select");
