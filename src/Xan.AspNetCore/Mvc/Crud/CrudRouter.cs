@@ -27,8 +27,8 @@ public class CrudRouter<TEntity>
     public string ToEnable(int id)
         => GetUriByAction(nameof(CrudController<TEntity>.Enable), new { id });
 
-    public string ToEdit(int id)
-        => GetUriByAction(nameof(CrudController<TEntity>.Edit), new { id });
+    public string ToEdit(int id, string? origin = null)
+        => GetUriByAction(nameof(CrudController<TEntity>.Edit), new { id, origin });
 
     public string ToList()
         => ToList(new ListParameter());

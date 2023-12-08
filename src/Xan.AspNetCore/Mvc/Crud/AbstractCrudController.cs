@@ -75,7 +75,7 @@ public abstract class AbstractCrudController<TEntity, TListParameter>
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Edit(TEntity entity)
+    public virtual async Task<IActionResult> Edit(TEntity entity, string? origin)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
@@ -84,7 +84,7 @@ public abstract class AbstractCrudController<TEntity, TListParameter>
         if (ModelState.IsValid)
         {
             await _service.UpdateAsync(entity);
-            return Redirect(_router.ToList());
+            return RedirectToOrigin(entity, origin);
         }
 
         ICrudModel model = await _modelFactory.EditModelAsync(entity);
@@ -99,5 +99,10 @@ public abstract class AbstractCrudController<TEntity, TListParameter>
         IPaginatedList<CrudItemModel<TEntity>> items = await _service.GetManyAsync(parameter.PageSize.Value, parameter.PageIndex, parameter.SearchString, parameter.State);
         ICrudListModel model = await _modelFactory.ListModelAsync(items, parameter);
         return View(Utils.ViewName(nameof(List)), model);
+    }
+
+    protected virtual IActionResult RedirectToOrigin(TEntity entity, string? origin)
+    {
+        return Redirect(_router.ToList());
     }
 }

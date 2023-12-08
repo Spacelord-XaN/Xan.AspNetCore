@@ -11,7 +11,7 @@ public interface ICrudRouter
 
     string ToDisable(int id);
 
-    string ToEdit(int id);
+    string ToEdit(int id, string? origin = null);
 
     string ToEnable(int id);
 
