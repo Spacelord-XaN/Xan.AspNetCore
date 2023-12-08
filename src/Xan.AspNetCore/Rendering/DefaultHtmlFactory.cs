@@ -15,11 +15,11 @@ public class DefaultHtmlFactory
 
     public IStringLocalizer Localizer { get; }
 
-    public virtual TagBuilder CheckBox(string name, bool value)
+    public virtual IInputBuilder CheckBox(string name, bool value)
     {
         ArgumentNullException.ThrowIfNull(name);
 
-        TagBuilder input = Input("checkbox", name, "true");
+        IInputBuilder input = Input("checkbox", name, "true");
         input.Attributes.Remove("class");
         if (value)
         {
@@ -29,7 +29,7 @@ public class DefaultHtmlFactory
         return input;
     }
 
-    public virtual TagBuilder DateInput(string name, DateOnly value, bool autoFocus = false)
+    public virtual IInputBuilder DateInput(string name, DateOnly value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(name);
@@ -38,7 +38,7 @@ public class DefaultHtmlFactory
         return DateInput(name, stringValue, autoFocus);
     }
 
-    public virtual TagBuilder DateInput(string name, DateTime value, bool autoFocus = false)
+    public virtual IInputBuilder DateInput(string name, DateTime value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(name);
@@ -53,7 +53,7 @@ public class DefaultHtmlFactory
     public virtual TagBuilder Heading(int level)
         => TagBuilder($"h{level}");
 
-    public virtual TagBuilder HiddenInput(string name, int value)
+    public virtual IInputBuilder HiddenInput(string name, int value)
     {
         ArgumentNullException.ThrowIfNull(name);
 
@@ -61,7 +61,7 @@ public class DefaultHtmlFactory
         return HiddenInput(name, stringValue);
     }
 
-    public virtual TagBuilder HiddenInput(string name, string value)
+    public virtual IInputBuilder HiddenInput(string name, string value)
     {
         ArgumentNullException.ThrowIfNull(name);
 
@@ -75,7 +75,7 @@ public class DefaultHtmlFactory
         return $"id_{name}";
     }
 
-    public virtual TagBuilder Input(string type, string name, string? value, bool autoFocus = false)
+    public virtual IInputBuilder Input(string type, string name, string? value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(type);
         ArgumentNullException.ThrowIfNull(name);
@@ -90,7 +90,7 @@ public class DefaultHtmlFactory
         {
             input.SetAutoFocus();
         }
-        return input;
+        return new DefaultInputBuilder(input);
     }
 
     public virtual TagBuilder Label()
@@ -105,7 +105,7 @@ public class DefaultHtmlFactory
         return a;
     }
 
-    public virtual TagBuilder NumberInput(string name, int value, bool autoFocus = false)
+    public virtual IInputBuilder NumberInput(string name, int value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(name);
@@ -114,7 +114,7 @@ public class DefaultHtmlFactory
         return Input("number", name, stringValue, autoFocus);
     }
 
-    public virtual TagBuilder NumberInput(string name, double value, bool autoFocus = false)
+    public virtual IInputBuilder NumberInput(string name, double value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(name);
@@ -123,7 +123,7 @@ public class DefaultHtmlFactory
         return Input("number", name, stringValue, autoFocus);
     }
 
-    public virtual TagBuilder NumberInput(string name, decimal value, bool autoFocus = false)
+    public virtual IInputBuilder NumberInput(string name, decimal value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(name);
@@ -142,14 +142,14 @@ public class DefaultHtmlFactory
     public virtual TagBuilder Paragraph()
         => TagBuilder("p");
 
-    public virtual TagBuilder PasswordInput(string name, string? value, bool autoFocus = false)
+    public virtual IInputBuilder PasswordInput(string name, string? value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(name);
 
         return Input("password", name, value, autoFocus);
     }
 
-    public virtual TagBuilder Select(string name, string? value, SelectList items, bool submitOnChange = false, bool autoFocus = false)
+    public virtual IInputBuilder Select(string name, string? value, SelectList items, bool submitOnChange = false, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(items);
@@ -174,10 +174,10 @@ public class DefaultHtmlFactory
             select.InnerHtml.AppendHtml(option);
         }
 
-        return select;
+        return new DefaultInputBuilder(select);
     }
 
-    public virtual TagBuilder Select(string name, int? value, SelectList items, bool submitOnChange = false, bool autoFocus = false)
+    public virtual IInputBuilder Select(string name, int? value, SelectList items, bool submitOnChange = false, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(items);
@@ -190,7 +190,7 @@ public class DefaultHtmlFactory
         return Select(name, currentValueString, items, submitOnChange, autoFocus);
     }
 
-    public virtual TagBuilder Select<TEnum>(string name, TEnum? value, SelectList items, bool submitOnChange = false, bool autoFocus = false)
+    public virtual IInputBuilder Select<TEnum>(string name, TEnum? value, SelectList items, bool submitOnChange = false, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(items);
@@ -235,7 +235,7 @@ public class DefaultHtmlFactory
     public virtual TagBuilder Td(TableScope scope)
         => TableCell("td", scope);
 
-    public virtual TagBuilder TextArea(string name, string? value, bool autoFocus = false)
+    public virtual IInputBuilder TextArea(string name, string? value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(name);
 
@@ -248,10 +248,10 @@ public class DefaultHtmlFactory
         {
             textArea.SetAutoFocus();
         }
-        return textArea;
+        return new DefaultInputBuilder(textArea);
     }
 
-    public virtual TagBuilder TextInput(string name, string? value, bool autoFocus = false)
+    public virtual IInputBuilder TextInput(string name, string? value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(name);
 
@@ -267,7 +267,7 @@ public class DefaultHtmlFactory
     public virtual TagBuilder Th(TableScope scope)
         => TableCell("th", scope);
 
-    public virtual TagBuilder TimeInput(string name, TimeOnly value, bool autoFocus = false)
+    public virtual IInputBuilder TimeInput(string name, TimeOnly value, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(name);
@@ -279,7 +279,7 @@ public class DefaultHtmlFactory
     public virtual TagBuilder Tr()
         => TagBuilder("tr");
 
-    private TagBuilder DateInput(string name, string stringValue, bool autoFocus)
+    private IInputBuilder DateInput(string name, string stringValue, bool autoFocus)
        => Input("date", name, stringValue, autoFocus);
 
     private TagBuilder TableCell(string tag, TableScope scope)

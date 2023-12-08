@@ -43,7 +43,7 @@ public class DefaultBoostrapHtmlFactory
 
         HtmlContentBuilder content = new();
 
-        TagBuilder input = CheckBox(name, value);
+        IInputBuilder input = CheckBox(name, value);
         input.AddCssClass("form-check-input");
         content.AppendHtml(input);
 
@@ -76,7 +76,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = DateInput(name, value, autoFocus);
+        IInputBuilder input = DateInput(name, value, autoFocus);
         return DateInputField(name, input, title);
     }
 
@@ -85,7 +85,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = DateInput(name, value, autoFocus);
+        IInputBuilder input = DateInput(name, value, autoFocus);
         return DateInputField(name, input, title);
     }
 
@@ -103,7 +103,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = Input("email", name, value, autoFocus);
+        IInputBuilder input = Input("email", name, value, autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -114,7 +114,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = NumberInput(name, value, autoFocus);
+        IInputBuilder input = NumberInput(name, value, autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -125,7 +125,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = NumberInput(name, value, autoFocus);
+        IInputBuilder input = NumberInput(name, value, autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -136,7 +136,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = NumberInput(name, value, autoFocus);
+        IInputBuilder input = NumberInput(name, value, autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -147,7 +147,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = PasswordInput(name, value, autoFocus);
+        IInputBuilder input = PasswordInput(name, value, autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -158,19 +158,19 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = Input("tel", name, value, autoFocus);
+        IInputBuilder input = Input("tel", name, value, autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
     }
 
-    public override TagBuilder Select(string name, string? value, SelectList items, bool submitOnChange = false, bool autoFocus = false)
+    public override IInputBuilder Select(string name, string? value, SelectList items, bool submitOnChange = false, bool autoFocus = false)
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(items);
         ArgumentNullException.ThrowIfNull(value);
 
-        TagBuilder select = base.Select(name, value, items, submitOnChange, autoFocus);
+        IInputBuilder select = base.Select(name, value, items, submitOnChange, autoFocus);
         select.AddCssClass("form-select");
         return select;
     }
@@ -181,7 +181,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(items);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = Select(name, value, items, submitOnChange, autoFocus);
+        IInputBuilder input = Select(name, value, items, submitOnChange, autoFocus);
 
         return InputField(name, input, title);
     }
@@ -198,7 +198,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = TextInput(name, value, autoFocus);
+        IInputBuilder input = TextInput(name, value, autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -209,7 +209,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = TextArea(name, value, autoFocus);
+        IInputBuilder input = TextArea(name, value, autoFocus);
         input.AddCssClass("form-control");
 
         TagBuilder field = InputField(name, input, title);
@@ -221,7 +221,7 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        TagBuilder input = TimeInput(name, value, autoFocus);
+        IInputBuilder input = TimeInput(name, value, autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -268,14 +268,14 @@ public class DefaultBoostrapHtmlFactory
         return errorMessages;
     }
 
-    private TagBuilder DateInputField(string name, TagBuilder input, string title)
+    protected TagBuilder DateInputField(string name, IInputBuilder input, string title)
     {
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
     }
 
-    private TagBuilder InputField(string name, TagBuilder input, string title)
+    protected TagBuilder InputField(string name, IInputBuilder input, string title)
     {
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(input);
