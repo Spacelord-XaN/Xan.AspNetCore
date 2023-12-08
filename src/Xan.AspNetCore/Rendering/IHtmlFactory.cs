@@ -35,6 +35,8 @@ public interface IHtmlFactory
 
     TagBuilder NumberInput(string name, decimal value, bool autoFocus = false);
 
+    TagBuilder Option(string? value);
+
     TagBuilder Paragraph();
 
     TagBuilder PasswordInput(string name, string? value, bool autoFocus = false);

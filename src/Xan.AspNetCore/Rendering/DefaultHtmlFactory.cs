@@ -132,6 +132,13 @@ public class DefaultHtmlFactory
         return Input("text", name, stringValue, autoFocus);
     }
 
+    public virtual TagBuilder Option(string? value)
+    {
+        TagBuilder option = TagBuilder("option");
+        option.Attributes.Add("value", value ?? "null");
+        return option;
+    }
+
     public virtual TagBuilder Paragraph()
         => TagBuilder("p");
 
@@ -200,8 +207,7 @@ public class DefaultHtmlFactory
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        TagBuilder option = TagBuilder("option");
-        option.Attributes.Add("value", value ?? "null");
+        TagBuilder option = Option(value);
         option.InnerHtml.SetHtmlContent(text);
         if (isSelected)
         {
