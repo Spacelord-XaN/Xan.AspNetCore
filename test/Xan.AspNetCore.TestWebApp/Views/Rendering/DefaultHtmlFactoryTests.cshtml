@@ -1,0 +1,15 @@
+﻿@using Xan.AspNetCore.Rendering
+@using Xan.AspNetCore.TestWebApp.Models.Rendering
+@model DefaultHtmlFactoryViewModel
+@{
+    ViewData["Title"] = "DefaultHtmlFactoryViewModelTests";
+    DefaultHtmlFactory Sut = new(Localizer);
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    @Sut.NumberInput(nameof(Model.IntValue), Model.IntValue)
+
+    <input type="submit" value="Ok" />
+</form>
