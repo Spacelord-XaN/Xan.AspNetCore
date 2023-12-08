@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Xan.AspNetCore.Mvc.Crud
+@using Xan.AspNetCore.TestWebApp.Models.Crud
+
+@inject ICrudRouter<ShipEntity> Router
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -21,6 +26,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Rendering" asp-action="DefaultHtmlFactoryTests">DefaultHtmlFactoryTests</a>
+                            <a class="nav-link text-dark" href="@Router.ToList(10, 0)">List</a>
                         </li>
                     </ul>
                 </div>

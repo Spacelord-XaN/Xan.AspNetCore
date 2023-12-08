@@ -1,12 +1,42 @@
-using Xan.AspNetCore.Rendering;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Xan.AspNetCore.Http;
+using Xan.AspNetCore.Mvc;
+using Xan.AspNetCore.Mvc.Crud;
+using Xan.AspNetCore.Mvc.Filters;
+using Xan.AspNetCore.TestWebApp.Controllers;
+using Xan.AspNetCore.TestWebApp.Data;
+using Xan.AspNetCore.TestWebApp.Models.Crud;
+using Xan.AspNetCore.TestWebApp.Rendering;
+using Xan.AspNetCore.TestWebApp.Services.Crud;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services
-    .AddControllersWithViews();
+    .AddControllersWithViews(options =>
+    {
+        options.Filters.Add<PageSizeFilter>();
+    });
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+builder.Services
+        .AddDbContext<TestWebAppDbContext>(options =>
+        {
+            options
+                .UseSqlite("DataSource=test.db")
+                .EnableSensitiveDataLogging();
+        });
+
+builder.Services
+    .AddScoped<TestAppHtmlFactory>()
+    .AddScoped<ShipCrudModelFactory>()
+    .AddScoped<ShipCrudService>()
+    .AddScoped<ICrudRouter<ShipEntity>, CrudRouter<ShipEntity>>()    
+    ;
+
+builder.Services.AddValidatorsFromAssemblyContaining<ShipEntityValidator>();
 
 var app = builder.Build();
 
@@ -26,6 +56,32 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Rendering}/{action=DefaultHtmlFactoryTests}");
+    pattern: "{controller}/{action}",
+    defaults: new { controller = MvcHelper.ControllerName<RenderingController>(), action = nameof(RenderingController.DefaultHtmlFactoryTests) }
+);
+
+PageSizeCookie.Options.MaxAge = TimeSpan.FromDays(2);
+
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    TestWebAppDbContext db = scope.ServiceProvider.GetRequiredService<TestWebAppDbContext>();
+    db.Database.EnsureCreated();
+    
+    if (! await db.Ships.AnyAsync())
+    {
+        db.Ships.Add(new ShipEntity
+        {
+            Name = "USS Enterpise",
+            LengthInMeters = 123,
+        });
+        db.Ships.Add(new ShipEntity
+        {
+            Name = "Voyager",
+            LengthInMeters = 555
+        });
+        await db.SaveChangesAsync();
+    }
+
+}
 
 app.Run();

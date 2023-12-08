@@ -1,0 +1,15 @@
+﻿@using Xan.AspNetCore.Mvc.Crud
+@model ICrudModel
+
+<form method="post">
+    <div class="card m-2">
+        @AppHtml.TitleCardHeader()
+        <div class="card-body">
+            @await Model.EditorAsync(ViewContext)
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary">@Localizer["Save"]</button>
+            <a class="btn btn-danger" href="@ViewContext.HttpContext.Request.Headers.Referer">@Localizer["Cancel"]</a>
+        </div>
+    </div>
+</form>

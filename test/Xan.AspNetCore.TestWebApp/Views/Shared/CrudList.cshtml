@@ -1,0 +1,23 @@
+﻿@using Xan.AspNetCore.Mvc.Crud
+@using Xan.AspNetCore.Mvc.ViewFeatures;
+
+@model ICrudListModel
+@{
+    ViewData.SetTitle(Localizer[Model.ListTitle]);
+}
+
+<form method="get">
+    <div class="card m-2">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <h4 class="col-auto m-0">@ViewData.Title()</h4>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            @await Model.TableAsync(ViewContext)
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-primary" href="@Model.Router.ToCreate()">@Model.CreateText</a>
+        </div>
+    </div>
+</form>

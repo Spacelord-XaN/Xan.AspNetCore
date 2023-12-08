@@ -1,0 +1,9 @@
+﻿@using Xan.AspNetCore.Mvc.Crud
+@using Xan.AspNetCore.Mvc.ViewFeatures;
+
+@model ICrudModel
+@{
+    ViewData.SetTitle(Localizer[Model.Title]);
+}
+
+<partial name="_CrudEditor.cshtml" model="Model" />

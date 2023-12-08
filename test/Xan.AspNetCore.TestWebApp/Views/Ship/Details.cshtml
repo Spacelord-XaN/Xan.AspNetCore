@@ -1,0 +1,18 @@
+﻿@using Xan.AspNetCore.Mvc.Crud
+@using Xan.AspNetCore.Rendering
+@using Xan.AspNetCore.TestWebApp.Models.Crud
+
+@inject ICrudRouter<ShipEntity> Router
+@model ShipEntity
+
+<div class="card m-2">
+    <h4 class="card-header">
+        Name: @Model.Name
+    </h4>
+    <div class="card-body">
+        Length: @Model.LengthInMeters m
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-primary" href="@Router.ToEdit(Model.Id)">Edit</a>
+    </div>
+</div>
