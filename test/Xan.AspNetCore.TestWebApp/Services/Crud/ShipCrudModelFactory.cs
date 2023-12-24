@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Xan.AspNetCore.Mvc.Crud;
+using Xan.AspNetCore.Parameter;
 using Xan.AspNetCore.Rendering;
 using Xan.AspNetCore.TestWebApp.Models.Crud;
 using Xan.AspNetCore.TestWebApp.Rendering;
@@ -10,11 +11,11 @@ using Xan.Extensions.Collections.Generic;
 namespace Xan.AspNetCore.TestWebApp.Services.Crud;
 
 public class ShipCrudModelFactory
-    : AbstractCrudModelFactory<ShipEntity>
+    : AbstractCrudModelFactory<ShipEntity, ListParameter, ShipRouter>
 {
     private readonly TestAppHtmlFactory _html;
 
-    public ShipCrudModelFactory(TestAppHtmlFactory html, ICrudRouter<ShipEntity> router)
+    public ShipCrudModelFactory(TestAppHtmlFactory html, ShipRouter router)
         : base(router)
     {
         _html = html ?? throw new ArgumentNullException(nameof(html));

@@ -1,4 +1,5 @@
 ﻿using Xan.AspNetCore.Rendering;
+using Xan.AspNetCore.Tests.Mockups;
 
 namespace Xan.AspNetCore.Tests.Rendering.DefaultHtmlFactoryTests;
 
@@ -8,7 +9,7 @@ public class DataList
     public void NoItems()
     {
         //  Arrange
-        DefaultHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultHtmlFactory factory = new(new StringLocalizerMock());
 
         //  Act
         IInputBuilder result = factory.DataList("MyName", "MyValue", new HashSet<string?>());
@@ -21,7 +22,7 @@ public class DataList
     public void NoItems_AutoFocus()
     {
         //  Arrange
-        DefaultHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultHtmlFactory factory = new(new StringLocalizerMock());
 
         //  Act
         IInputBuilder result = factory.DataList("MyName", "MyValue", new HashSet<string?>(), autoFocus: true);
@@ -34,7 +35,7 @@ public class DataList
     public void NoItems_ValueIsNull()
     {
         //  Arrange
-        DefaultHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultHtmlFactory factory = new(new StringLocalizerMock());
         string? value = null;
 
         //  Act
@@ -48,7 +49,7 @@ public class DataList
     public void WithItems()
     {
         //  Arrange
-        DefaultHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultHtmlFactory factory = new(new StringLocalizerMock());
         HashSet<string?> items = new () { "Item1", "Item2" };
 
         //  Act
@@ -62,7 +63,7 @@ public class DataList
     public void WithAll()
     {
         //  Arrange
-        DefaultHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultHtmlFactory factory = new(new StringLocalizerMock());
         HashSet<string?> items = new() { "Item1", "Item2" };
 
         //  Act

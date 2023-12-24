@@ -1,33 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Moq;
+﻿using FluentAssertions.Execution;
+using Microsoft.AspNetCore.Mvc;
 using Xan.AspNetCore.Mvc.Crud;
 
 namespace Xan.AspNetCore.Tests.Mvc.Crud.AbstractCrudControllerTests;
 
 public class Create
-    : AbstractCrudControllerTest
+    : TestBase
 {
-    [Fact]
-    public async Task ReturnsNewObject()
+    [Theory]
+    [AutoData]
+    public async Task ReturnsNewObject(TestEntity entity)
     {
-        TestEntity entity = Fixture.Create<TestEntity>();
-        ICrudModel crudModel = Fixture.Create<ICrudModel>();
+        //  Arrange
+        ICrudModel model = A.Fake<ICrudModel>();
 
-        MockModelFactory.Setup(f => f.CreateModelAsync(entity))
-            .ReturnsAsync(crudModel);
-        MockService.Setup(s => s.CreateNewAsync())
-            .ReturnsAsync(entity);
-
+        A.CallTo(() => Service.CreateNewAsync())
+            .Returns(entity);
+        A.CallTo(() => ModelFactory.CreateModelAsync(entity))
+            .Returns(model);
+            
+        //  Act
         IActionResult result = await Sut.Create();
 
-        ViewResult viewResult = result.Should()
-            .BeOfType<ViewResult>().Subject;
-        viewResult.ViewName.Should()
-            .Be("CrudCreate");
-        viewResult.Model.Should()
-            .BeAssignableTo<ICrudModel>();
+        //  Assert
+        using (new AssertionScope())
+        {
+            ViewResult view = result.Should().BeOfType<ViewResult>().Subject;
+            view.ViewName.Should().Be("CrudCreate");
+            view.ViewData.ModelState.IsValid.Should().BeTrue();
+            view.Model.Should().Be(model);
+        }
 
-        MockService.Verify(s => s.CreateNewAsync(), Times.Once());
-        MockModelFactory.Verify(f => f.CreateModelAsync(It.IsAny<TestEntity>()), Times.Once());
+        A.CallTo(() => Service.CreateNewAsync()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => ModelFactory.CreateModelAsync(entity)).MustHaveHappenedOnceExactly();
     }
 }

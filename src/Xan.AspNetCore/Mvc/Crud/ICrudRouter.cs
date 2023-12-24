@@ -21,13 +21,13 @@ public interface ICrudRouter
 
     string ToList(int? pageSize, int pageIndex);
 
-    string ToList(ListParameter parameter);
-
     string GetUriByAction(string action, object? values = null);
 }
 
-public interface ICrudRouter<TEntity>
+public interface ICrudRouter<TEntity, TListParameter>
     : ICrudRouter
     where TEntity : class, ICrudEntity, new ()
+    where TListParameter : ListParameter
 {
+    string ToList(TListParameter parameter);
 }

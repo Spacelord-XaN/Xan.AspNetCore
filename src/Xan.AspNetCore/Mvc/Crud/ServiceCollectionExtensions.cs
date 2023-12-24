@@ -1,22 +1,28 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Xan.AspNetCore.Mvc.Abstractions;
+using Xan.AspNetCore.Parameter;
 
 namespace Xan.AspNetCore.Mvc.Crud;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddCrud(this IServiceCollection services, Action<CrudOptions> configureOptions)
+    public static IServiceCollection AddCrudServices<TEntity, TListParameter, TRouter, TService, TModelFactory>(this IServiceCollection services)
+        where TEntity : class, ICrudEntity, new()
+        where TListParameter : ListParameter
+        where TRouter : class, ICrudRouter<TEntity, TListParameter>
+        where TService : class, ICrudService<TEntity>
+        where TModelFactory : class, ICrudModelFactory<TEntity, TListParameter>
+
     {
         ArgumentNullException.ThrowIfNull(services);
-        ArgumentNullException.ThrowIfNull(configureOptions);
 
-        CrudOptions crudOptions = new(services);
-        configureOptions(crudOptions);
-
-        services.AddControllers(options =>
-        {
-            options.Conventions.Add(crudOptions.BuildConvention());
-        });
-
-        return services;
+        return services
+            .AddScoped<TRouter>()
+            .AddScoped<ICrudRouter<TEntity, TListParameter>>(sp => sp.GetRequiredService<TRouter>())
+            .AddScoped<TService>()
+            .AddScoped<ICrudService<TEntity>>(sp => sp.GetRequiredService<TService>())
+            .AddScoped<TModelFactory>()
+            .AddScoped<ICrudModelFactory<TEntity, TListParameter>>(sp => sp.GetRequiredService<TModelFactory>())
+            ;
     }
 }

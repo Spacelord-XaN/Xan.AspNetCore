@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Xan.AspNetCore.Rendering;
+using Xan.AspNetCore.Tests.Mockups;
 
 namespace Xan.AspNetCore.Tests.Rendering.DefaultBoostrapHtmlFactoryTests;
 
@@ -9,7 +10,7 @@ public class Select_StringValue
     public void NoItems()
     {
         //  Arrange
-        DefaultBoostrapHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultBoostrapHtmlFactory factory = new(new StringLocalizerMock());
 
         //  Act
         IInputBuilder result = factory.Select("MyName", "MyValue", new SelectList(Enumerable.Empty<string>()));
@@ -22,7 +23,7 @@ public class Select_StringValue
     public void NoItems_SubmitOnChange()
     {
         //  Arrange
-        DefaultBoostrapHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultBoostrapHtmlFactory factory = new(new StringLocalizerMock());
 
         //  Act
         IInputBuilder result = factory.Select("MyName", "MyValue", new SelectList(Enumerable.Empty<string>()), submitOnChange: true);
@@ -35,7 +36,7 @@ public class Select_StringValue
     public void NoItems_AutoFocus()
     {
         //  Arrange
-        DefaultBoostrapHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultBoostrapHtmlFactory factory = new(new StringLocalizerMock());
 
         //  Act
         IInputBuilder result = factory.Select("MyName", "MyValue", new SelectList(Enumerable.Empty<string>()), autoFocus: true);
@@ -48,7 +49,7 @@ public class Select_StringValue
     public void NoItems_ValueIsNull()
     {
         //  Arrange
-        DefaultBoostrapHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultBoostrapHtmlFactory factory = new(new StringLocalizerMock());
         string? value = null;
 
         //  Act
@@ -62,7 +63,7 @@ public class Select_StringValue
     public void WithItems()
     {
         //  Arrange
-        DefaultBoostrapHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultBoostrapHtmlFactory factory = new(new StringLocalizerMock());
         SelectList items = new (new[] { "Item1", "Item2" });
 
         //  Act
@@ -76,7 +77,7 @@ public class Select_StringValue
     public void WithAll()
     {
         //  Arrange
-        DefaultBoostrapHtmlFactory factory = new(Mockups.StringLocalizer());
+        DefaultBoostrapHtmlFactory factory = new(new StringLocalizerMock());
         SelectList items = new(new[] { "Item1", "Item2" });
 
         //  Act

@@ -4,10 +4,12 @@ using Xan.AspNetCore.Http;
 using Xan.AspNetCore.Mvc;
 using Xan.AspNetCore.Mvc.Crud;
 using Xan.AspNetCore.Mvc.Filters;
+using Xan.AspNetCore.Parameter;
 using Xan.AspNetCore.TestWebApp.Controllers;
 using Xan.AspNetCore.TestWebApp.Data;
 using Xan.AspNetCore.TestWebApp.Models.Crud;
 using Xan.AspNetCore.TestWebApp.Rendering;
+using Xan.AspNetCore.TestWebApp.Routing;
 using Xan.AspNetCore.TestWebApp.Services.Crud;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,10 +32,8 @@ builder.Services
         });
 
 builder.Services
+    .AddCrudServices<ShipEntity, ListParameter, ShipRouter, ShipCrudService, ShipCrudModelFactory>()
     .AddScoped<TestAppHtmlFactory>()
-    .AddScoped<ShipCrudModelFactory>()
-    .AddScoped<ShipCrudService>()
-    .AddScoped<ICrudRouter<ShipEntity>, CrudRouter<ShipEntity>>()    
     ;
 
 builder.Services.AddValidatorsFromAssemblyContaining<ShipEntityValidator>();
@@ -81,7 +81,6 @@ using (IServiceScope scope = app.Services.CreateScope())
         });
         await db.SaveChangesAsync();
     }
-
 }
 
 app.Run();

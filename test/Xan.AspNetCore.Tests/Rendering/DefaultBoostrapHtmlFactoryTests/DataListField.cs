@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Moq;
 using Xan.AspNetCore.Rendering;
+using Xan.AspNetCore.Tests.Mockups;
 
 namespace Xan.AspNetCore.Tests.Rendering.DefaultBoostrapHtmlFactoryTests;
 
@@ -10,9 +10,9 @@ public class DataListField
     public void WithAll()
     {
         //  Arrange
-        Mock<ViewContext> viewContext = new();
-        DefaultBoostrapHtmlFactory factory = new(Mockups.StringLocalizer());
-        factory.Contextualize(viewContext.Object);
+        ViewContext viewContext = new();
+        DefaultBoostrapHtmlFactory factory = new(new StringLocalizerMock());
+        factory.Contextualize(viewContext);
         HashSet<string?> items = new() { "Item1", "Item2" };
 
         //  Act

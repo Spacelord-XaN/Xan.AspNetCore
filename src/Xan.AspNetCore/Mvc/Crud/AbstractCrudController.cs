@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Xan.AspNetCore.EntityFrameworkCore;
 using Xan.AspNetCore.Mvc.Abstractions;
 using Xan.AspNetCore.Mvc.Crud.Core;
 using Xan.AspNetCore.Parameter;
@@ -12,28 +13,56 @@ public abstract class AbstractCrudController<TEntity, TListParameter>
     where TEntity : class, ICrudEntity, new()
     where TListParameter : ListParameter
 {
-    private readonly ICrudService<TEntity> _service;
-    private readonly ICrudRouter<TEntity> _router;
+    public abstract Task<IActionResult> Create();
+
+    [HttpPost]
+    public abstract Task<IActionResult> Create(TEntity entity);
+
+    public abstract Task<IActionResult> Delete(int id);
+
+    public abstract Task<IActionResult> Disable(int id);
+
+    public abstract Task<IActionResult> Enable(int id);
+
+    public abstract Task<IActionResult> Edit(int id);
+
+    [HttpPost]
+    public abstract Task<IActionResult> Edit(TEntity entity, string? origin);
+
+    public abstract Task<IActionResult> List(TListParameter parameter);
+}
+
+public abstract class AbstractCrudController<TEntity, TListParameter, TRouter, TService>
+    : AbstractCrudController<TEntity, TListParameter>
+    where TEntity : class, ICrudEntity, new()
+    where TListParameter : ListParameter
+    where TRouter : ICrudRouter<TEntity, TListParameter>
+    where TService : ICrudService<TEntity>
+{
     private readonly ICrudModelFactory<TEntity, TListParameter> _modelFactory;
     private readonly IValidator<TEntity> _validator;
 
-    public AbstractCrudController(ICrudService<TEntity> service, ICrudRouter<TEntity> router, ICrudModelFactory<TEntity, TListParameter> modelFactory, IValidator<TEntity> validator)
+    public AbstractCrudController(TService service, TRouter router, ICrudModelFactory<TEntity, TListParameter> modelFactory, IValidator<TEntity> validator)
     {
-        _service = service ?? throw new ArgumentNullException(nameof(service));
-        _router = router ?? throw new ArgumentNullException(nameof(router));
+        Service = service ?? throw new ArgumentNullException(nameof(service));
+        Router = router ?? throw new ArgumentNullException(nameof(router));
         _modelFactory = modelFactory ?? throw new ArgumentNullException(nameof(modelFactory));
         _validator = validator ?? throw new ArgumentNullException(nameof(validator));
     }
+    
+    protected TRouter Router { get; }
 
-    public virtual async Task<IActionResult> Create()
+    protected TService Service { get; }
+
+    public override async Task<IActionResult> Create()
     {
-        TEntity entity = await _service.CreateNewAsync();
+        TEntity entity = await Service.CreateNewAsync();
         ICrudModel model = await _modelFactory.CreateModelAsync(entity);
         return View(Utils.ViewName(nameof(Create)), model);
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Create(TEntity entity)
+    public override async Task<IActionResult> Create(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
@@ -41,41 +70,41 @@ public abstract class AbstractCrudController<TEntity, TListParameter>
 
         if (ModelState.IsValid)
         {
-            await _service.CreateAsync(entity);
-            return Redirect(_router.ToList());
+            await Service.CreateAsync(entity);
+            return Redirect(Router.ToList());
         }
 
         ICrudModel model = await _modelFactory.CreateModelAsync(entity);
         return View(Utils.ViewName(nameof(Create)), model);
     }
 
-    public virtual async Task<IActionResult> Delete(int id)
+    public override async Task<IActionResult> Delete(int id)
     {
-        await _service.DeleteAsync(id);
+        await Service.DeleteAsync(id);
         return RedirectToReferer();
     }
 
-    public virtual async Task<IActionResult> Disable(int id)
+    public override async Task<IActionResult> Disable(int id)
     {
-        await _service.DisableAsync(id);
+        await Service.DisableAsync(id);
         return RedirectToReferer();
     }
 
-    public virtual async Task<IActionResult> Enable(int id)
+    public override async Task<IActionResult> Enable(int id)
     {
-        await _service.EnableAsync(id);
+        await Service.EnableAsync(id);
         return RedirectToReferer();
     }
 
-    public virtual async Task<IActionResult> Edit(int id)
+    public override async Task<IActionResult> Edit(int id)
     {
-        TEntity entity = await _service.GetAsync(id);
+        TEntity entity = await Service.GetAsync(id);
         ICrudModel model = await _modelFactory.EditModelAsync(entity);
         return View(Utils.ViewName(nameof(Edit)), model);
     }
 
     [HttpPost]
-    public virtual async Task<IActionResult> Edit(TEntity entity, string? origin)
+    public override async Task<IActionResult> Edit(TEntity entity, string? origin)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
@@ -83,7 +112,7 @@ public abstract class AbstractCrudController<TEntity, TListParameter>
 
         if (ModelState.IsValid)
         {
-            await _service.UpdateAsync(entity);
+            await Service.UpdateAsync(entity);
             return RedirectToOrigin(entity, origin);
         }
 
@@ -91,18 +120,24 @@ public abstract class AbstractCrudController<TEntity, TListParameter>
         return View(Utils.ViewName(nameof(Edit)), model);
     }
 
-    public virtual async Task<IActionResult> List(TListParameter parameter)
+    public override async Task<IActionResult> List(TListParameter parameter)
     {
         ArgumentNullException.ThrowIfNull(parameter);
-        ArgumentNullException.ThrowIfNull(parameter.PageSize);
+        ArgumentNullException.ThrowIfNull(parameter.PageSize);        
 
-        IPaginatedList<CrudItemModel<TEntity>> items = await _service.GetManyAsync(parameter.PageSize.Value, parameter.PageIndex, parameter.SearchString, parameter.State);
+        IPaginatedList<CrudItemModel<TEntity>> items = await GetMany(parameter)
+            .AsPaginatedAsync(parameter.PageSize.Value, parameter.PageIndex, (Func<TEntity, Task<CrudItemModel<TEntity>>>)(async entity =>
+            {
+                bool canDelete = await Service.CanDeleteAsync(entity);
+                CrudItemModel<TEntity> item = new(entity, canDelete);
+                return item;
+            })); ;
         ICrudListModel model = await _modelFactory.ListModelAsync(items, parameter);
         return View(Utils.ViewName(nameof(List)), model);
     }
 
     protected virtual IActionResult RedirectToOrigin(TEntity entity, string? origin)
-    {
-        return Redirect(_router.ToList());
-    }
+        => Redirect(Router.ToList());
+
+    protected abstract IQueryable<TEntity> GetMany(TListParameter parameter);
 }

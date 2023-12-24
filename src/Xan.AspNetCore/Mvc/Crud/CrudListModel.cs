@@ -6,17 +6,18 @@ using Xan.Extensions.Collections.Generic;
 
 namespace Xan.AspNetCore.Mvc.Crud;
 
-public sealed class CrudListModel<TEntity, TListParameter>
+public sealed class CrudListModel<TEntity, TListParameter, TRouter>
     : PaginatedList<CrudItemModel<TEntity>>
     , ICrudListModel
     where TEntity : class, ICrudEntity, new()
     where TListParameter : ListParameter
+    where TRouter : ICrudRouter<TEntity, TListParameter>
 {
     public delegate Task<IHtmlContent> CreateTableDelegate(ViewContext viewContext, IPaginatedList<CrudItemModel<TEntity>> items);
 
     private readonly CreateTableDelegate _createTableAsync;
 
-    public CrudListModel(IPaginatedList<CrudItemModel<TEntity>> items, TListParameter parameter, CreateTableDelegate createTableAsync, ICrudRouter<TEntity> router, string listTitle, string createText)
+    public CrudListModel(IPaginatedList<CrudItemModel<TEntity>> items, TListParameter parameter, CreateTableDelegate createTableAsync, TRouter router, string listTitle, string createText)
         : base(items)
     {
         _createTableAsync = createTableAsync;
@@ -32,7 +33,7 @@ public sealed class CrudListModel<TEntity, TListParameter>
 
     ICrudRouter ICrudListModel.Router { get => Router; }
 
-    public ICrudRouter<TEntity> Router { get; }
+    public TRouter Router { get; }
 
     public string ListTitle { get; }
 

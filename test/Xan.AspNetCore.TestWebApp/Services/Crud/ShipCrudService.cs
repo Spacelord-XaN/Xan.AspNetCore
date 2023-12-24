@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Xan.AspNetCore.Models;
 using Xan.AspNetCore.Mvc.Crud;
 using Xan.AspNetCore.TestWebApp.Data;
 using Xan.AspNetCore.TestWebApp.Models.Crud;
@@ -24,12 +25,21 @@ public class ShipCrudService
         return await Task.FromResult(true);
     }
 
-    public override IQueryable<ShipEntity> DefaultOrder(IQueryable<ShipEntity> set)
+    public IQueryable<ShipEntity> GetMany(string? searchString = null, ObjectState? state = null)
     {
-        return set.OrderBy(s => s.Name);
+        IQueryable<ShipEntity> iq = Set;
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            iq = iq.Where(Search(searchString));
+        }
+        if (state.HasValue)
+        {
+            iq = iq.Where(entity => entity.State == state.Value);
+        }
+        return iq.OrderBy(ship => ship.Name);
     }
 
-    public override Expression<Func<ShipEntity, bool>> Search(string searchString)
+    private static Expression<Func<ShipEntity, bool>> Search(string searchString)
     {
         ArgumentNullException.ThrowIfNull(searchString);
 

@@ -21,14 +21,4 @@ public class TestCrudService
     {
         throw new NotImplementedException();
     }
-
-    public override IQueryable<TestEntity> DefaultOrder(IQueryable<TestEntity> set)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override Expression<Func<TestEntity, bool>> Search(string searchString)
-    {
-        throw new NotImplementedException();
-    }
 }

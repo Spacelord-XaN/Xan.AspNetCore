@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Xan.AspNetCore.Rendering;
+using Xan.AspNetCore.Tests.Mockups;
 
 namespace Xan.AspNetCore.Tests.Rendering.DefaultHtmlFactoryTests;
 
@@ -9,7 +10,7 @@ public class SelectOption
     public void ValueAndSelected_ReturnsHtml()
     {
         //  Arrange
-        DefaultHtmlFactory sut = new(Mockups.StringLocalizer());
+        DefaultHtmlFactory sut = new(new StringLocalizerMock());
 
         //  Act
         TagBuilder option = sut.SelectOption("ThisIsTheText", "ThisIsTheValue", true);
@@ -22,7 +23,7 @@ public class SelectOption
     public void ValueAndNotSelected_ReturnsHtml()
     {
         //  Arrange
-        DefaultHtmlFactory sut = new(Mockups.StringLocalizer());
+        DefaultHtmlFactory sut = new(new StringLocalizerMock());
 
         //  Act
         TagBuilder option = sut.SelectOption("ThisIsTheText", "ThisIsTheValue", false);
@@ -35,7 +36,7 @@ public class SelectOption
     public void NullValueAndNotSelected_ReturnsHtml()
     {
         //  Arrange
-        DefaultHtmlFactory sut = new(Mockups.StringLocalizer());
+        DefaultHtmlFactory sut = new(new StringLocalizerMock());
 
         //  Act
         TagBuilder option = sut.SelectOption("ThisIsTheText", null, false);
@@ -48,7 +49,7 @@ public class SelectOption
     public void NullValueAndSelected_ReturnsHtml()
     {
         //  Arrange
-        DefaultHtmlFactory sut = new(Mockups.StringLocalizer());
+        DefaultHtmlFactory sut = new(new StringLocalizerMock());
 
         //  Act
         TagBuilder option = sut.SelectOption("ThisIsTheText", null, true);

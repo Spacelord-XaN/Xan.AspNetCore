@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using Xan.AspNetCore.Models;
 using Xan.AspNetCore.Mvc.Abstractions;
-using Xan.Extensions.Collections.Generic;
 
 namespace Xan.AspNetCore.Mvc.Crud;
 
@@ -17,8 +14,6 @@ public interface ICrudService<TEntity>
 
     Task<int> CreateAsync(TEntity entity);
 
-    IQueryable<TEntity> DefaultOrder(IQueryable<TEntity> set);
-
     Task DeleteAsync(int id);
 
     Task<TEntity> GetAsync(int id);
@@ -28,8 +23,4 @@ public interface ICrudService<TEntity>
     Task DisableAsync(int id);
 
     Task EnableAsync(int id);
-
-    Task<IPaginatedList<CrudItemModel<TEntity>>> GetManyAsync(int pageSize, int pageIndex, string? searchString = null, ObjectState? state = null);
-
-    Expression<Func<TEntity, bool>> Search(string searchString);
 }

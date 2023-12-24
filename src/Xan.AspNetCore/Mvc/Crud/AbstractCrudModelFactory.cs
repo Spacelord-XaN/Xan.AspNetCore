@@ -6,16 +6,19 @@ using Xan.Extensions.Collections.Generic;
 
 namespace Xan.AspNetCore.Mvc.Crud;
 
-public abstract class AbstractCrudModelFactory<TEntity>
-    : ICrudModelFactory<TEntity, ListParameter>
+public abstract class AbstractCrudModelFactory<TEntity, TListParameter, TRouter>
+    : ICrudModelFactory<TEntity, TListParameter>
     where TEntity : class, ICrudEntity, new()
+    where TListParameter : ListParameter, new()
+    where TRouter : ICrudRouter<TEntity, TListParameter>
+
 {
-    public AbstractCrudModelFactory(ICrudRouter<TEntity> router)
+    public AbstractCrudModelFactory(TRouter router)
     {
         Router = router ?? throw new ArgumentNullException(nameof(router));
     }
 
-    protected ICrudRouter<TEntity> Router { get; }
+    protected TRouter Router { get; }
 
     protected abstract string CreateTitle { get; }
 
@@ -39,11 +42,11 @@ public abstract class AbstractCrudModelFactory<TEntity>
         return await Task.FromResult(model);
     }
 
-    public async Task<ICrudListModel> ListModelAsync(IPaginatedList<CrudItemModel<TEntity>> items, ListParameter parameter)
+    public async Task<ICrudListModel> ListModelAsync(IPaginatedList<CrudItemModel<TEntity>> items, TListParameter parameter)
     {
         ArgumentNullException.ThrowIfNull(items);
 
-        ICrudListModel model = new CrudListModel<TEntity, ListParameter>(items, parameter, CreateTableAsync, Router, ListTitle, CreateTitle);
+        ICrudListModel model = new CrudListModel<TEntity, TListParameter, TRouter>(items, parameter, CreateTableAsync, Router, ListTitle, CreateTitle);
         return await Task.FromResult(model);
     }
 
