@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using Xan.AspNetCore.Mvc.Crud;
+using Xan.AspNetCore.Parameter;
 
 namespace Xan.AspNetCore.Tests.Mvc.Crud.AbstractCrudServiceTests;
 
 public class TestCrudService
-    : AbstractCrudService<TestEntity>
+    : AbstractCrudService<TestEntity, ListParameter>
 {
     private readonly TestDbContext _db;
 
@@ -18,6 +19,16 @@ public class TestCrudService
     public override DbSet<TestEntity> Set => _db.Tests;
 
     public override Task<bool> CanDeleteAsync(TestEntity entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override Expression<Func<TestEntity, bool>> Search(string searchString)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override IQueryable<TestEntity> OrderByDefault(IQueryable<TestEntity> iq)
     {
         throw new NotImplementedException();
     }

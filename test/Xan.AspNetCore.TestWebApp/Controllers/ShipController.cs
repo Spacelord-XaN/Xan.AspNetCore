@@ -21,23 +21,6 @@ public class ShipController
         return View(model);
     }
 
-    public override async Task<IActionResult> List(ListParameter parameter)
-    {
-        if (int.TryParse(parameter.SearchString, out int id))
-        {
-            return Redirect(Router.ToDetails(id));
-        }
-
-        return await base.List(parameter);
-    }
-
-    protected override IQueryable<ShipEntity> GetMany(ListParameter parameter)
-    {
-        ArgumentNullException.ThrowIfNull(parameter);
-
-        return Service.GetMany(parameter.SearchString, parameter.State);
-    }
-
     protected override IActionResult RedirectToOrigin(ShipEntity entity, string? origin)
     {
         if (origin == "details")

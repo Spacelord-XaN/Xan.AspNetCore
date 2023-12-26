@@ -1,5 +1,4 @@
-﻿using Xan.AspNetCore.Mvc.Abstractions;
-using Xan.AspNetCore.Parameter;
+﻿using Xan.AspNetCore.Parameter;
 
 namespace Xan.AspNetCore.Mvc.Crud;
 
@@ -21,13 +20,7 @@ public interface ICrudRouter
 
     string ToList(int? pageSize, int pageIndex);
 
-    string GetUriByAction(string action, object? values = null);
-}
+    string ToList(ListParameter parameter);
 
-public interface ICrudRouter<TEntity, TListParameter>
-    : ICrudRouter
-    where TEntity : class, ICrudEntity, new ()
-    where TListParameter : ListParameter
-{
-    string ToList(TListParameter parameter);
+    string GetUriByAction(string action, object? values = null);
 }

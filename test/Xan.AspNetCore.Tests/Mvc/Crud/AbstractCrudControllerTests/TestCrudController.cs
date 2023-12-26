@@ -5,14 +5,9 @@ using Xan.AspNetCore.Parameter;
 namespace Xan.AspNetCore.Tests.Mvc.Crud.AbstractCrudControllerTests;
 
 public class TestCrudController
-    : AbstractCrudController<TestEntity, ListParameter, ICrudRouter<TestEntity, ListParameter>, ICrudService<TestEntity>>
+    : AbstractCrudController<TestEntity, ListParameter, ICrudRouter, ICrudService<TestEntity, ListParameter>>
 {
-    public TestCrudController(ICrudService<TestEntity> service, ICrudRouter<TestEntity, ListParameter> router, ICrudModelFactory<TestEntity, ListParameter> modelFactory, IValidator<TestEntity> validator)
+    public TestCrudController(ICrudService<TestEntity, ListParameter> service, ICrudRouter router, ICrudModelFactory<TestEntity, ListParameter> modelFactory, IValidator<TestEntity> validator)
         : base(service, router, modelFactory, validator)
     { }
-
-    protected override IQueryable<TestEntity> GetMany(ListParameter parameter)
-    {
-        throw new NotImplementedException();
-    }
 }

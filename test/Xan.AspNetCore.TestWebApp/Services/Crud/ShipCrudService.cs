@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using Xan.AspNetCore.Models;
 using Xan.AspNetCore.Mvc.Crud;
+using Xan.AspNetCore.Parameter;
 using Xan.AspNetCore.TestWebApp.Data;
 using Xan.AspNetCore.TestWebApp.Models.Crud;
 
 namespace Xan.AspNetCore.TestWebApp.Services.Crud;
 
 public class ShipCrudService
-    : AbstractCrudService<ShipEntity>
+    : AbstractCrudService<ShipEntity, ListParameter>
 {
     private readonly TestWebAppDbContext _db;
 
@@ -21,25 +21,9 @@ public class ShipCrudService
     public override DbSet<ShipEntity> Set => _db.Ships;
 
     public override async Task<bool> CanDeleteAsync(ShipEntity entity)
-    {
-        return await Task.FromResult(true);
-    }
+        => await Task.FromResult(true);
 
-    public IQueryable<ShipEntity> GetMany(string? searchString = null, ObjectState? state = null)
-    {
-        IQueryable<ShipEntity> iq = Set;
-        if (!string.IsNullOrEmpty(searchString))
-        {
-            iq = iq.Where(Search(searchString));
-        }
-        if (state.HasValue)
-        {
-            iq = iq.Where(entity => entity.State == state.Value);
-        }
-        return iq.OrderBy(ship => ship.Name);
-    }
-
-    private static Expression<Func<ShipEntity, bool>> Search(string searchString)
+    protected override Expression<Func<ShipEntity, bool>> Search(string searchString)
     {
         ArgumentNullException.ThrowIfNull(searchString);
 
@@ -48,5 +32,12 @@ public class ShipCrudService
             return b => b.Id == id;
         }
         return b => EF.Functions.Like(b.Name!, $"%{searchString}%");
+    }
+
+    protected override IQueryable<ShipEntity> OrderByDefault(IQueryable<ShipEntity> iq)
+    {
+        ArgumentNullException.ThrowIfNull(iq);
+
+        return iq.OrderBy(b => b.Name);
     }
 }

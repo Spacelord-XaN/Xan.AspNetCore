@@ -10,7 +10,7 @@ public abstract class AbstractCrudModelFactory<TEntity, TListParameter, TRouter>
     : ICrudModelFactory<TEntity, TListParameter>
     where TEntity : class, ICrudEntity, new()
     where TListParameter : ListParameter, new()
-    where TRouter : ICrudRouter<TEntity, TListParameter>
+    where TRouter : ICrudRouter
 
 {
     public AbstractCrudModelFactory(TRouter router)
@@ -50,27 +50,7 @@ public abstract class AbstractCrudModelFactory<TEntity, TListParameter, TRouter>
         return await Task.FromResult(model);
     }
 
-    protected abstract IHtmlContent CreateEditor(ViewContext viewContext, TEntity entity);
+    protected abstract Task<IHtmlContent> CreateEditorAsync(ViewContext viewContext, TEntity entity);
 
-    protected virtual async Task<IHtmlContent> CreateEditorAsync(ViewContext viewContext, TEntity entity)
-    {
-        ArgumentNullException.ThrowIfNull(viewContext);
-        ArgumentNullException.ThrowIfNull(entity);
-
-        IHtmlContent editor = CreateEditor(viewContext, entity);
-
-        return await Task.FromResult(editor);
-    }
-
-    protected abstract IHtmlContent CreateTable(ViewContext viewContext, IPaginatedList<CrudItemModel<TEntity>> model);
-
-    protected virtual async Task<IHtmlContent> CreateTableAsync(ViewContext viewContext, IPaginatedList<CrudItemModel<TEntity>> model)
-    {
-        ArgumentNullException.ThrowIfNull(viewContext);
-        ArgumentNullException.ThrowIfNull(model);
-
-        IHtmlContent table = CreateTable(viewContext, model);
-
-        return await Task.FromResult(table);
-    }
+    protected abstract Task<IHtmlContent> CreateTableAsync(ViewContext viewContext, IPaginatedList<CrudItemModel<TEntity>> model);
 }

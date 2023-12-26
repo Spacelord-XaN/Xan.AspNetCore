@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Xan.AspNetCore.EntityFrameworkCore;
 using Xan.AspNetCore.Mvc.Abstractions;
 using Xan.AspNetCore.Mvc.Crud.Core;
 using Xan.AspNetCore.Parameter;
@@ -36,8 +35,8 @@ public abstract class AbstractCrudController<TEntity, TListParameter, TRouter, T
     : AbstractCrudController<TEntity, TListParameter>
     where TEntity : class, ICrudEntity, new()
     where TListParameter : ListParameter
-    where TRouter : ICrudRouter<TEntity, TListParameter>
-    where TService : ICrudService<TEntity>
+    where TRouter : ICrudRouter
+    where TService : ICrudService<TEntity, TListParameter>
 {
     private readonly ICrudModelFactory<TEntity, TListParameter> _modelFactory;
     private readonly IValidator<TEntity> _validator;
@@ -49,7 +48,7 @@ public abstract class AbstractCrudController<TEntity, TListParameter, TRouter, T
         _modelFactory = modelFactory ?? throw new ArgumentNullException(nameof(modelFactory));
         _validator = validator ?? throw new ArgumentNullException(nameof(validator));
     }
-    
+
     protected TRouter Router { get; }
 
     protected TService Service { get; }
@@ -123,21 +122,12 @@ public abstract class AbstractCrudController<TEntity, TListParameter, TRouter, T
     public override async Task<IActionResult> List(TListParameter parameter)
     {
         ArgumentNullException.ThrowIfNull(parameter);
-        ArgumentNullException.ThrowIfNull(parameter.PageSize);        
 
-        IPaginatedList<CrudItemModel<TEntity>> items = await GetMany(parameter)
-            .AsPaginatedAsync(parameter.PageSize.Value, parameter.PageIndex, (Func<TEntity, Task<CrudItemModel<TEntity>>>)(async entity =>
-            {
-                bool canDelete = await Service.CanDeleteAsync(entity);
-                CrudItemModel<TEntity> item = new(entity, canDelete);
-                return item;
-            })); ;
+        IPaginatedList<CrudItemModel<TEntity>> items = await Service.GetManyAsync(parameter);
         ICrudListModel model = await _modelFactory.ListModelAsync(items, parameter);
         return View(Utils.ViewName(nameof(List)), model);
     }
 
     protected virtual IActionResult RedirectToOrigin(TEntity entity, string? origin)
         => Redirect(Router.ToList());
-
-    protected abstract IQueryable<TEntity> GetMany(TListParameter parameter);
 }

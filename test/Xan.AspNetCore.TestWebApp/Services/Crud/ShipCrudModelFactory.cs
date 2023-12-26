@@ -27,7 +27,7 @@ public class ShipCrudModelFactory
 
     protected override string ListTitle => "Ships";
 
-    protected override IHtmlContent CreateEditor(ViewContext viewContext, ShipEntity entity)
+    protected override async Task<IHtmlContent> CreateEditorAsync(ViewContext viewContext, ShipEntity entity)
     {
         ArgumentNullException.ThrowIfNull(viewContext);
         ArgumentNullException.ThrowIfNull(entity);
@@ -36,15 +36,16 @@ public class ShipCrudModelFactory
         result.AppendHtml(_html.HiddenInput(nameof(entity.Id), entity.Id));
         result.AppendHtml(_html.TextInputField(nameof(entity.Name), entity.Name, "Name", autoFocus: true));
         result.AppendHtml(_html.NumberInputField(nameof(entity.LengthInMeters), entity.LengthInMeters, "Length [m]"));
-        return result;
+
+        return await Task.FromResult(result);
     }
 
-    protected override IHtmlContent CreateTable(ViewContext viewContext, IPaginatedList<CrudItemModel<ShipEntity>> model)
+    protected override async Task<IHtmlContent> CreateTableAsync(ViewContext viewContext, IPaginatedList<CrudItemModel<ShipEntity>> model)
     {
         ArgumentNullException.ThrowIfNull(viewContext);
         ArgumentNullException.ThrowIfNull(model);
 
-        return _html.Table(model)
+        IHtmlContent table = _html.Table(model)
             .IdColumn()
             .Column(c => c.PercentWidth(80).BreakText().Title("Name").For(item => item.Entity.Name))
             .Column(c => c.PercentWidth(20).Title("Length [m]").For(item => item.Entity.LengthInMeters))
@@ -55,5 +56,7 @@ public class ShipCrudModelFactory
             .EditLinkColumn(Router)
             .DeleteOrToggleStateLinkColumn(Router)
             .Build();
+
+        return await Task.FromResult(table);
     }
 }

@@ -15,11 +15,11 @@ public class TestBase
 
     protected ICrudModelFactory<TestEntity, ListParameter> ModelFactory { get; } = Helpers.Fake<ICrudModelFactory<TestEntity, ListParameter>>();
 
-    protected ICrudRouter<TestEntity, ListParameter> Router { get; } = Helpers.Fake<ICrudRouter<TestEntity, ListParameter>>();
+    protected ICrudRouter Router { get; } = Helpers.Fake<ICrudRouter>();
 
-    protected ICrudService<TestEntity> Service { get; } = Helpers.Fake<ICrudService<TestEntity>>();
+    protected ICrudService<TestEntity, ListParameter> Service { get; } = Helpers.Fake<ICrudService<TestEntity, ListParameter>>();
 
     protected IValidator<TestEntity> Validator { get; } = Helpers.Fake<IValidator<TestEntity>>();
 
-    protected AbstractCrudController<TestEntity, ListParameter, ICrudRouter<TestEntity, ListParameter>, ICrudService<TestEntity>> Sut { get; }
+    protected TestCrudController Sut { get; }
 }

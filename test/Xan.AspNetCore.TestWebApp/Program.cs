@@ -32,7 +32,9 @@ builder.Services
         });
 
 builder.Services
-    .AddCrudServices<ShipEntity, ListParameter, ShipRouter, ShipCrudService, ShipCrudModelFactory>()
+    .AddSingleton<ShipRouter>()
+    .AddScoped<ShipCrudModelFactory>()
+    .AddScoped<ShipCrudService>()
     .AddScoped<TestAppHtmlFactory>()
     ;
 

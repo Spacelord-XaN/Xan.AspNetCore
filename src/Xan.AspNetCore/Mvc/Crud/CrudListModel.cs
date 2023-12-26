@@ -11,7 +11,7 @@ public sealed class CrudListModel<TEntity, TListParameter, TRouter>
     , ICrudListModel
     where TEntity : class, ICrudEntity, new()
     where TListParameter : ListParameter
-    where TRouter : ICrudRouter<TEntity, TListParameter>
+    where TRouter : ICrudRouter
 {
     public delegate Task<IHtmlContent> CreateTableDelegate(ViewContext viewContext, IPaginatedList<CrudItemModel<TEntity>> items);
 

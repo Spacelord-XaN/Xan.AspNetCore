@@ -6,18 +6,17 @@ using Xan.AspNetCore.Parameter;
 
 namespace Xan.AspNetCore.Mvc.Crud;
 
-public class CrudRouter<TEntity, TListParameter>
+public class CrudRouter<TEntity>
     : LinkRouter
-    , ICrudRouter<TEntity, TListParameter>
+    , ICrudRouter
     where TEntity : class, ICrudEntity, new()
-    where TListParameter : ListParameter, new()
 {
-    private const string _createAction = nameof(AbstractCrudController<TEntity, TListParameter>.Create);
-    private const string _deleteAction = nameof(AbstractCrudController<TEntity, TListParameter>.Delete);
-    private const string _disableAction = nameof(AbstractCrudController<TEntity, TListParameter>.Disable);
-    private const string _editAction = nameof(AbstractCrudController<TEntity, TListParameter>.Edit);
-    private const string _enableAction = nameof(AbstractCrudController<TEntity, TListParameter>.Enable);
-    private const string _listAction = nameof(AbstractCrudController<TEntity, TListParameter>.List);
+    private const string _createAction = nameof(AbstractCrudController<TEntity, ListParameter>.Create);
+    private const string _deleteAction = nameof(AbstractCrudController<TEntity, ListParameter>.Delete);
+    private const string _disableAction = nameof(AbstractCrudController<TEntity, ListParameter>.Disable);
+    private const string _editAction = nameof(AbstractCrudController<TEntity, ListParameter>.Edit);
+    private const string _enableAction = nameof(AbstractCrudController<TEntity, ListParameter>.Enable);
+    private const string _listAction = nameof(AbstractCrudController<TEntity, ListParameter>.List);
 
     private static readonly string _controllerName = Utils.ControllerName<TEntity>();
 
@@ -41,15 +40,15 @@ public class CrudRouter<TEntity, TListParameter>
         => GetUriByAction(_editAction, new { id, origin });
 
     public string ToList()
-        => ToList(new TListParameter());
+        => ToList(new ListParameter());
 
     public string ToList(int pageIndex)
-        => ToList(new TListParameter { PageIndex = pageIndex });
+        => ToList(new ListParameter { PageIndex = pageIndex });
 
     public string ToList(int? pageSize, int pageIndex)
-        => ToList(new TListParameter { PageIndex = pageIndex, PageSize = pageSize });
+        => ToList(new ListParameter { PageIndex = pageIndex, PageSize = pageSize });
 
-    public string ToList(TListParameter parameter)
+    public string ToList(ListParameter parameter)
     {
         ArgumentNullException.ThrowIfNull(parameter);
 
