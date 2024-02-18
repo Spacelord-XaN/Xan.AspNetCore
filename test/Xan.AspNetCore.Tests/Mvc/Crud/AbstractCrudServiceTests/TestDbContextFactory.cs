@@ -11,6 +11,7 @@ public sealed class TestDbContextFactory
 
     public TestDbContextFactory()
     {
+        _connection.Open();
         _builder.UseSqlite(_connection);
         Context = new(_builder.Options);
     }

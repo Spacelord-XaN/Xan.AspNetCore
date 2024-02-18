@@ -22,6 +22,8 @@ public abstract class AbstractCrudService<TEntity, TListParameter>
 
     public abstract DbSet<TEntity> Set { get; }
 
+    protected IQueryable<TEntity> UntrackedSet => Set.AsNoTracking();
+
     public abstract Task<bool> CanDeleteAsync(TEntity entity);
 
     public virtual async Task<TEntity> CreateNewAsync()
@@ -39,7 +41,7 @@ public abstract class AbstractCrudService<TEntity, TListParameter>
 
     public virtual async Task DeleteAsync(int id)
     {
-        TEntity entity = await Set.FirstByIdAsync(id);
+        TEntity entity = await UntrackedSet.FirstByIdAsync(id);
         Set.Remove(entity);
         await _db.SaveChangesAsync();
     }
@@ -49,6 +51,7 @@ public abstract class AbstractCrudService<TEntity, TListParameter>
         TEntity entity = await Set.FirstByIdAsync(id);
         entity.State = ObjectState.Disabled;
         await _db.SaveChangesAsync();
+        Set.Local.Remove(entity);
     }
 
     public virtual async Task EnableAsync(int id)
@@ -56,17 +59,18 @@ public abstract class AbstractCrudService<TEntity, TListParameter>
         TEntity entity = await Set.FirstByIdAsync(id);
         entity.State = ObjectState.Enabled;
         await _db.SaveChangesAsync();
+        Set.Local.Remove(entity);
     }
 
     public virtual async Task<TEntity> GetAsync(int id)
-        => await Set.FirstByIdAsync(id);
+        => await UntrackedSet.FirstByIdAsync(id);
 
     public virtual async Task<IPaginatedList<CrudItemModel<TEntity>>> GetManyAsync(TListParameter parameter)
     {
         ArgumentNullException.ThrowIfNull(parameter);
         ArgumentNullException.ThrowIfNull(parameter.PageSize);
 
-        IQueryable<TEntity> iq = OrderByDefault(Set);
+        IQueryable<TEntity> iq = OrderByDefault(UntrackedSet);
         if (!string.IsNullOrEmpty(parameter.SearchString))
         {
             iq = iq.Where(Search(parameter.SearchString));

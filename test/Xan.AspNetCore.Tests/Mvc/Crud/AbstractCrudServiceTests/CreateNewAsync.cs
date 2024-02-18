@@ -1,15 +1,17 @@
 ﻿namespace Xan.AspNetCore.Tests.Mvc.Crud.AbstractCrudServiceTests;
 
 public class CreateNewAsync
-    : AbstractCrudServiceTest
+    : TestBase
 {
     [Fact]
     public async Task ReturnsDefaultObject()
     {
-        TestCrudService sut = new(Context);
+        // Arrange
 
-        TestEntity entity = await sut.CreateNewAsync();
+        //  Act
+        TestEntity entity = await Sut.CreateNewAsync();
 
+        //  Assert
         entity.Should().BeEquivalentTo(new TestEntity());
     }
 }

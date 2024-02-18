@@ -2,12 +2,8 @@
 
 namespace Xan.AspNetCore.Tests.Mvc.Crud.AbstractCrudServiceTests;
 
-public sealed class TestDbContext
-    : DbContext
+public sealed class TestDbContext(DbContextOptions<TestDbContext> options)
+    : DbContext(options)
 {
-    public TestDbContext(DbContextOptions<TestDbContext> options)
-        : base(options)
-    { }
-
     public DbSet<TestEntity> Tests => Set<TestEntity>();
 }
