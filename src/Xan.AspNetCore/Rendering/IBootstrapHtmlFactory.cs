@@ -16,6 +16,8 @@ public interface IBootstrapHtmlFactory
 
     TagBuilder DateInputField(string name, DateTime value, string title, bool autoFocus = false);
 
+    TagBuilder DateTimeInputField(string name, DateTime value, string title, bool autoFocus = false);
+
     string EnabledCss(bool isEnabled);
 
     TagBuilder EmailInputField(string name, string? value, string title, bool autoFocus = false);

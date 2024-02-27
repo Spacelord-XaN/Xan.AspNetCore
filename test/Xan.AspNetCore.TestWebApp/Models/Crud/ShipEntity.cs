@@ -8,6 +8,8 @@ public sealed class ShipEntity
     public string? Name { get; set; }
 
     public int LengthInMeters { get; set; }
+
+    public DateTime BirthDate { get; set; }
 }
 
 public sealed class ShipEntityValidator

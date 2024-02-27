@@ -23,6 +23,14 @@ public static class ColumnBuilderExtensions
         return builder.For(item => getString(item).ToHtml());
     }
 
+    public static ColumnBuilder<T> For<T>(this ColumnBuilder<T> builder, Func<T, DateTime?> getDateTime)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(getDateTime);
+
+        return builder.For(item => getDateTime(item).ToHtmlTimeStamp());
+    }
+
     public static ColumnBuilder<CrudItemModel<T>> ForEditLink<T>(this ColumnBuilder<CrudItemModel<T>> builder, ICrudRouter router)
         where T : IEntity
     {

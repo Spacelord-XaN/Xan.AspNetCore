@@ -15,6 +15,8 @@ public interface IHtmlFactory
 
     IInputBuilder DateInput(string name, DateTime value, bool autoFocus = false);
 
+    IInputBuilder DateTimeInput(string name, DateTime value, bool autoFocus = false);
+
     TagBuilder Div();
 
     TagBuilder Heading(int level);

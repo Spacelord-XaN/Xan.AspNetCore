@@ -36,6 +36,7 @@ public class ShipCrudModelFactory
         result.AppendHtml(_html.HiddenInput(nameof(entity.Id), entity.Id));
         result.AppendHtml(_html.TextInputField(nameof(entity.Name), entity.Name, "Name", autoFocus: true));
         result.AppendHtml(_html.NumberInputField(nameof(entity.LengthInMeters), entity.LengthInMeters, "Length [m]"));
+        result.AppendHtml(_html.DateTimeInputField(nameof(entity.BirthDate), entity.BirthDate, "Birth Date"));
 
         return await Task.FromResult(result);
     }
@@ -47,7 +48,8 @@ public class ShipCrudModelFactory
 
         IHtmlContent table = _html.Table(model)
             .IdColumn()
-            .Column(c => c.PercentWidth(80).BreakText().Title("Name").For(item => item.Entity.Name))
+            .Column(c => c.PercentWidth(50).BreakText().Title("Name").For(item => item.Entity.Name))
+            .Column(c => c.PercentWidth(30).Title("Birth Date").For(item => item.Entity.BirthDate))
             .Column(c => c.PercentWidth(20).Title("Length [m]").For(item => item.Entity.LengthInMeters))
             .CreatedAtColumn()
             .UpdatedAtColumn()

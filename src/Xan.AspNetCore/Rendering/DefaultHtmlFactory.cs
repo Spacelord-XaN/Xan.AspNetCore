@@ -5,15 +5,10 @@ using System.Globalization;
 
 namespace Xan.AspNetCore.Rendering;
 
-public class DefaultHtmlFactory
+public class DefaultHtmlFactory(IStringLocalizer stringLocalizer)
     : IHtmlFactory
 {
-    public DefaultHtmlFactory(IStringLocalizer stringLocalizer)
-    {
-        Localizer = stringLocalizer ?? throw new ArgumentNullException(nameof(stringLocalizer));
-    }
-
-    public IStringLocalizer Localizer { get; }
+    public IStringLocalizer Localizer { get; } = stringLocalizer ?? throw new ArgumentNullException(nameof(stringLocalizer));
 
     public virtual IInputBuilder CheckBox(string name, bool value)
     {
@@ -70,6 +65,14 @@ public class DefaultHtmlFactory
 
         string stringValue = value.ToString("yyyy-MM-dd");
         return DateInput(name, stringValue, autoFocus);
+    }
+
+    public virtual IInputBuilder DateTimeInput(string name, DateTime value, bool autoFocus = false)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(name);
+        string stringValue = DateTimeToStringValue(value);
+        return Input("datetime-local", name, stringValue, autoFocus);
     }
 
     public virtual TagBuilder Div()
@@ -303,19 +306,6 @@ public class DefaultHtmlFactory
     public virtual TagBuilder Tr()
         => TagBuilder("tr");
 
-    private IInputBuilder DateInput(string name, string stringValue, bool autoFocus)
-       => Input("date", name, stringValue, autoFocus);
-
-    private TagBuilder TableCell(string tag, TableScope scope)
-    {
-        TagBuilder cell = TagBuilder(tag);
-        if (scope != TableScope.None)
-        {
-            cell.SetScope(scope.ToHtmlAttributeString());
-        }
-        return cell;
-    }
-
     protected virtual TagBuilder TagBuilder(string tagName, string? name = null)
     {
         ArgumentNullException.ThrowIfNull(tagName);
@@ -327,5 +317,21 @@ public class DefaultHtmlFactory
             tag.SetId(Id(name));
         }
         return tag;
+    }
+
+    private IInputBuilder DateInput(string name, string stringValue, bool autoFocus)
+       => Input("date", name, stringValue, autoFocus);
+
+    private static string DateTimeToStringValue(DateTime value)
+        => value.ToString("yyyy-MM-ddTHH:mm");
+
+    private TagBuilder TableCell(string tag, TableScope scope)
+    {
+        TagBuilder cell = TagBuilder(tag);
+        if (scope != TableScope.None)
+        {
+            cell.SetScope(scope.ToHtmlAttributeString());
+        }
+        return cell;
     }
 }

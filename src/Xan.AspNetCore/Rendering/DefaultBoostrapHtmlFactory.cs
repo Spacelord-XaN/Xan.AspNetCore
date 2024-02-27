@@ -6,16 +6,11 @@ using Xan.AspNetCore.Mvc.ViewFeatures;
 
 namespace Xan.AspNetCore.Rendering;
 
-public class DefaultBoostrapHtmlFactory
-    : DefaultHtmlFactory
+public class DefaultBoostrapHtmlFactory(IStringLocalizer localizer)
+    : DefaultHtmlFactory(localizer)
     , IBootstrapHtmlFactory
 {
     private ViewContext? _viewContext;
-
-    public DefaultBoostrapHtmlFactory(IStringLocalizer localizer)
-        : base(localizer)
-    {
-    }
 
     public virtual void Contextualize(ViewContext viewContext)
     {
@@ -98,6 +93,15 @@ public class DefaultBoostrapHtmlFactory
         ArgumentNullException.ThrowIfNull(title);
 
         IInputBuilder input = DateInput(name, value, autoFocus);
+        return DateInputField(name, input, title);
+    }
+
+    public TagBuilder DateTimeInputField(string name, DateTime value, string title, bool autoFocus = false)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(title);
+
+        IInputBuilder input = DateTimeInput(name, value, autoFocus);
         return DateInputField(name, input, title);
     }
 
