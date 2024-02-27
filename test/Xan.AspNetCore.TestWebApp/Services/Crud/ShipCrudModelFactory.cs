@@ -33,7 +33,7 @@ public class ShipCrudModelFactory
         ArgumentNullException.ThrowIfNull(entity);
 
         HtmlContentBuilder result = new();
-        result.AppendHtml(_html.HiddenInput(nameof(entity.Id), entity.Id));
+        result.AppendHtml(_html.HiddenInputs(entity));
         result.AppendHtml(_html.TextInputField(nameof(entity.Name), entity.Name, "Name", autoFocus: true));
         result.AppendHtml(_html.NumberInputField(nameof(entity.LengthInMeters), entity.LengthInMeters, "Length [m]"));
         result.AppendHtml(_html.DateTimeInputField(nameof(entity.BirthDate), entity.BirthDate, "Birth Date"));

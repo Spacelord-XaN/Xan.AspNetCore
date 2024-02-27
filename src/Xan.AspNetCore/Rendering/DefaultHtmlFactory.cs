@@ -96,6 +96,14 @@ public class DefaultHtmlFactory(IStringLocalizer stringLocalizer)
         return Input("hidden", name, value);
     }
 
+    public virtual IInputBuilder HiddenInput(string name, DateTime value)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        string stringValue = DateTimeToStringValue(value);
+        return HiddenInput(name, stringValue);
+    }
+
     public virtual string Id(string name)
     {
         ArgumentNullException.ThrowIfNull(name);

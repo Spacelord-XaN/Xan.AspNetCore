@@ -25,6 +25,8 @@ public interface IHtmlFactory
 
     IInputBuilder HiddenInput(string name, string value);
 
+    IInputBuilder HiddenInput(string name, DateTime value);
+
     string Id(string name);
 
     IInputBuilder Input(string type, string name, string? value, bool autoFocus = false);
