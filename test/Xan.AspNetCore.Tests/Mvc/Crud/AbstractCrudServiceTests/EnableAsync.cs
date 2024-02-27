@@ -1,4 +1,5 @@
 ﻿using Xan.AspNetCore.EntityFrameworkCore;
+using Xan.AspNetCore.Models;
 
 namespace Xan.AspNetCore.Tests.Mvc.Crud.AbstractCrudServiceTests;
 
@@ -10,7 +11,7 @@ public class EnableAsync
     public async Task ShouldEnableAndRemoveFromChangeTracker(TestEntity entity)
     {
         // Arrange
-        entity.State = Models.ObjectState.Disabled;
+        entity.State = ObjectState.Disabled;
         Db.Tests.Add(entity);
         await Db.SaveChangesAsync();
 
@@ -22,7 +23,7 @@ public class EnableAsync
         {
             Db.Tests.Local.Should().NotContain(entity);
             TestEntity fromDb = await Db.Tests.FirstByIdAsync(entity.Id);
-            fromDb.State.Should().Be(Models.ObjectState.Enabled);
+            fromDb.State.Should().Be(ObjectState.Enabled);
         }
     }
 }

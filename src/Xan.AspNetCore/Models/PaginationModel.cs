@@ -16,6 +16,24 @@ public sealed class PaginationModel
         int gapToFirst = twoBefore - first;
         int gapToLast = totalPages - twoAfter;
 
+        if (pageIndex <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pageIndex), "The page index must be greater that 0. The first page has index 1.");
+        }
+        if (pageIndex > totalPages)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pageIndex), "The page index is greater than the total pages.");
+        }
+        if (totalPages <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(totalPages), "Total pages must be greater that 0.");
+        }
+
+        if (totalPages <=0)
+        {
+            yield break;
+        }
+
         if (totalPages > 0)
         {
             yield return first;
