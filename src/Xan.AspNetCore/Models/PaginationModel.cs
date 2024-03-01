@@ -3,7 +3,7 @@ using Xan.Extensions.Collections;
 
 namespace Xan.AspNetCore.Models;
 
-public sealed class PaginationModel
+public sealed class PaginationModel(IPaginatedList items, ListParameter currentParameter, Func<ListParameter, string> getListUrl)
 {
     public static IEnumerable<int?> GetPages(int pageIndex, int totalPages)
     {
@@ -95,17 +95,7 @@ public sealed class PaginationModel
         yield return IPaginatedList.AllPageSize;
     }
 
-    private readonly Func<ListParameter, string> _toList;
-    private readonly ListParameter _currentParameter;
-
-    public PaginationModel(IPaginatedList items, ListParameter currentParameter, Func<ListParameter, string> toList)
-    {
-        Items = items ?? throw new ArgumentNullException(nameof(items));
-        _toList = toList ?? throw new ArgumentNullException(nameof(toList));
-        _currentParameter = currentParameter ?? throw new ArgumentNullException(nameof(currentParameter));
-    }
-
-    public IPaginatedList Items { get; }
+    public IPaginatedList Items { get; } = items ?? throw new ArgumentNullException(nameof(items));
 
     public IEnumerable<int?> GetPages()
         => GetPages(Items.PageIndex, Items.TotalPageCount);
@@ -114,17 +104,17 @@ public sealed class PaginationModel
         => page == Items.PageIndex;
 
     public string ToPageSize(int? pageSize)
-        => ToList(_currentParameter.ToPageSize(pageSize));
+        => GetListUrl(currentParameter.ToPageSize(pageSize));
 
     public string ToNextPage()
         => ToPage(Items.PageIndex + 1);
 
     public string ToPage(int page)
-        => ToList(_currentParameter.ToPage(page));
+        => GetListUrl(currentParameter.ToPage(page));
     
     public string ToPreviousPage()
         => ToPage(Items.PageIndex - 1);
 
-    private string ToList(ListParameter parameter)
-        => _toList(parameter);
+    private string GetListUrl(ListParameter parameter)
+        => getListUrl(parameter);
 }

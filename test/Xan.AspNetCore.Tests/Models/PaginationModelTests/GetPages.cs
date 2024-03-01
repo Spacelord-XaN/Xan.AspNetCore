@@ -1,20 +1,45 @@
 ﻿using Xan.AspNetCore.Models;
+using Xan.AspNetCore.Parameter;
+using Xan.Extensions.Collections.Generic;
 
 namespace Xan.AspNetCore.Tests.Models.PaginationModelTests;
 
 public class GetPages
 {
+    public static object[][] ShouldThrowArgumentOutOfRangeExceptionTestData =
+    [
+        [ int.MaxValue, int.MinValue ],
+        [ int.MaxValue, 0 ],
+        [ 0, 1 ],
+        [ int.MinValue, 1 ],
+        [ int.MinValue, int.MaxValue ]
+    ];
+
     [Theory]
-    [AutoData]
-    public void NotalPagesZero(int pageIndex)
+    [MemberData(nameof(ShouldThrowArgumentOutOfRangeExceptionTestData))]
+    public void Static_ShouldThrowOutOfRangeException(int totalPages, int pageIndex)
     {
         //  Arrange
 
         //  Act
-        IEnumerable<int?> result = PaginationModel.GetPages(pageIndex, 0);
+        Action act = () => PaginationModel.GetPages(pageIndex, totalPages).ToArray();
 
         //  Assert
-        result.Should().BeEmpty();
+        act.Should().Throw<ArgumentOutOfRangeException>();
+    }
+
+    [Theory]
+    [MemberData(nameof(ShouldThrowArgumentOutOfRangeExceptionTestData))]
+    public void Instance_ShouldThrowOutOfRangeException(int totalPages, int pageIndex)
+    {
+        //  Arrange
+        PaginationModel paginationModel = new(new PaginatedList<object>([], pageIndex, 0, totalPages, 0), new ListParameter(), parameter => string.Empty);
+
+        //  Act
+        Action act = () => paginationModel.GetPages().ToArray();
+
+        //  Assert
+        act.Should().Throw<ArgumentOutOfRangeException>();
     }
 
     public static object[][] ShouldReturnExpectedPagesTestData =
@@ -116,12 +141,26 @@ public class GetPages
 
     [Theory]
     [MemberData(nameof(ShouldReturnExpectedPagesTestData))]
-    public void ShouldReturnExpectedPages(int totalPages, int pageIndex, int?[] expectedPages)
+    public void Static_ShouldReturnExpectedPages(int totalPages, int pageIndex, int?[] expectedPages)
     {
         //  Arrange
 
         //  Act
         IEnumerable<int?> result = PaginationModel.GetPages(pageIndex, totalPages);
+
+        //  Assert
+        result.Should().BeEquivalentTo(expectedPages);
+    }
+
+    [Theory]
+    [MemberData(nameof(ShouldReturnExpectedPagesTestData))]
+    public void Instance_ShouldReturnExpectedPages(int totalPages, int pageIndex, int?[] expectedPages)
+    {
+        //  Arrange
+        PaginationModel paginationModel = new(new PaginatedList<object>([], pageIndex, 0, totalPages, 0), new ListParameter(), parameter => string.Empty);
+
+        //  Act
+        IEnumerable<int?> result = paginationModel.GetPages();
 
         //  Assert
         result.Should().BeEquivalentTo(expectedPages);
