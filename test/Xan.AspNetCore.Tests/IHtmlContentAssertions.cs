@@ -10,13 +10,9 @@ public static class IHtmlContentExtensions
         => new(instance);
 }
 
-public class IHtmlContentAssertions
-    : ReferenceTypeAssertions<IHtmlContent, IHtmlContentAssertions>
+public class IHtmlContentAssertions(IHtmlContent instance)
+    : ReferenceTypeAssertions<IHtmlContent, IHtmlContentAssertions>(instance)
 {
-    public IHtmlContentAssertions(IHtmlContent instance)
-        : base(instance)
-    { }
-
     protected override string Identifier => "IHtmlContent";
 
     public AndConstraint<IHtmlContentAssertions> BeHtml(string expectedHtml)
@@ -28,5 +24,13 @@ public class IHtmlContentAssertions
         actualHtml.Should().Be(expectedHtml);
 
         return new(this);
+    }
+
+    public AndConstraint<IHtmlContentAssertions> BeHtml(IHtmlContent content)
+    {
+        using StringWriter writer = new();
+        content.WriteTo(writer, HtmlEncoder.Default);
+
+        return BeHtml(writer.ToString());
     }
 }

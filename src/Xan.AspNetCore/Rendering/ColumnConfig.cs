@@ -48,10 +48,7 @@ public sealed class ColumnConfig<TItem>
     public string GetHeaderStyle()
     {
         string style = string.Empty;
-        if (Width != null)
-        {
-            style += Width.GetStyle();
-        }
+        style += Width.GetStyle();
         style += Align.GetStyle();
         style += "white-space: nowrap;";
         return style;
@@ -60,10 +57,7 @@ public sealed class ColumnConfig<TItem>
     public string GetStyle()
     {
         string style = string.Empty;
-        if (Width != null)
-        {
-            style += Width.GetStyle();
-        }
+        style += Width.GetStyle();
         style += Align.GetStyle();
         if (BreakText)
         {

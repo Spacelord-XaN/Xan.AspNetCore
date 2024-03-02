@@ -13,7 +13,7 @@ public static class TableBuilderExtensions
 		return builder.Column(c => c
 			.AutoWidth()
 			.Title(builder.Localizer[XanAspNetCoreTexts.CreatedAt])
-			.ForTimeStamp(item => item.Entity.CreatedAt)
+			.For(item => item.Entity.CreatedAt)
             );
     }
 
@@ -89,7 +89,7 @@ public static class TableBuilderExtensions
         return builder.Column(c => c
             .AutoWidth()
             .Title(builder.Localizer[XanAspNetCoreTexts.UpdatedAt])
-            .ForTimeStamp(item => item.Entity.UpdatedAt)
+            .For(item => item.Entity.UpdatedAt)
             );
     }
 }

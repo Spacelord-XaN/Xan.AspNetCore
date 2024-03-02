@@ -122,14 +122,6 @@ public static class ColumnBuilderExtensions
         return builder.For(item => getPrice(item).ToHtmlPrice());
     }
 
-    public static ColumnBuilder<T> ForTimeStamp<T>(this ColumnBuilder<T> builder, Func<T, DateTime?> getTimeStamp)
-    {
-        ArgumentNullException.ThrowIfNull(builder);
-        ArgumentNullException.ThrowIfNull(getTimeStamp);
-
-        return builder.For(item => getTimeStamp(item).ToHtmlTimeStamp());
-    }
-
     public static ColumnBuilder<T> Title<T>(this ColumnBuilder<T> builder, string title)
     {
         ArgumentNullException.ThrowIfNull(builder);
