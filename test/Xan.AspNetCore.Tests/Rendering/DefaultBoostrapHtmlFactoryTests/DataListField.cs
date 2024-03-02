@@ -19,6 +19,6 @@ public class DataListField
         TagBuilder result = factory.DataListField("MyName", "MyValue", items, "MyTitle", autoFocus: true);
 
         //  Assert
-        result.Should().Html("""<div class="mb-3"><label class="form-label">MyTitle</label><input autofocus="" class="form-control" id="id_MyName" list="id_MyNameOptions" name="MyName" type="text" value="MyValue"></input><datalist id="id_MyNameOptions" name="MyNameOptions"><option value="Item1"></option><option value="Item2"></option></datalist></div>""");
+        result.Should().BeHtml("""<div class="mb-3"><label class="form-label">MyTitle</label><input autofocus="" class="form-control" id="id_MyName" list="id_MyNameOptions" name="MyName" type="text" value="MyValue"></input><datalist id="id_MyNameOptions" name="MyNameOptions"><option value="Item1"></option><option value="Item2"></option></datalist></div>""");
     }
 }

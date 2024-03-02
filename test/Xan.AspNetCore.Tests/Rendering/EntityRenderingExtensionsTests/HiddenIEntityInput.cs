@@ -19,6 +19,6 @@ public class HiddenIEntityInput
         IHtmlContent result = sut.HiddenIEntityInput(entity);
 
         //  Assert
-        result.Should().Html("""<input id="id_Id" name="Id" type="hidden" value="666"></input>""");
+        result.Should().BeHtml("""<input id="id_Id" name="Id" type="hidden" value="666"></input>""");
     }
 }

@@ -1,43 +1,51 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 
 namespace Xan.AspNetCore.Mvc.ViewFeatures;
 
 public static class ViewDataDictionaryExtensions
 {
-    private const string _titleKey = "Title";
+    internal const string _titleKey = "Title";
 
-    public static void SetTitle(this ViewDataDictionary viewData, LocalizedString value)
+    public static void SetTitle(this IDictionary<string, object?> viewData, LocalizedString value)
         => SetData(viewData, _titleKey, value);
 
-    public static LocalizedString Title(this ViewDataDictionary viewData)
+    public static LocalizedString Title(this IDictionary<string, object?> viewData)
     {
         LocalizedString? title = GetData<LocalizedString>(viewData, _titleKey);
-        if (title == null)
+        if (title is null)
         {
             throw new InvalidOperationException("No page title set.");
         }
         return title;
     }
 
-    private static T? GetData<T>(this ViewDataDictionary viewData, string key)
+    private static T? GetData<T>(this IDictionary<string, object?> viewData, string key)
     {
         ArgumentNullException.ThrowIfNull(viewData);
         ArgumentNullException.ThrowIfNull(key);
 
-        object? data = viewData[key];
-        if (data == null)
+        if (viewData.TryGetValue(key, out object? data))
         {
-            return default;
+            if (data is not null)
+            {
+                return (T)data;
+            }
         }
-        return (T)data;
+        return default;
     }
 
-    private static void SetData<T>(this ViewDataDictionary viewData, string key, T? data)
+    private static void SetData<T>(this IDictionary<string, object?> viewData, string key, T data)
     {
         ArgumentNullException.ThrowIfNull(viewData);
         ArgumentNullException.ThrowIfNull(key);
 
-        viewData[key] = data ?? throw new ArgumentNullException(nameof(data));
+        if (viewData.ContainsKey(key))
+        {
+            viewData[key] = data;
+        }
+        else
+        {
+            viewData.Add(key, data);
+        }
     }
 }

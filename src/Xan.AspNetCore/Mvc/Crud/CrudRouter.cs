@@ -18,7 +18,7 @@ public class CrudRouter<TEntity>
     private const string _enableAction = nameof(AbstractCrudController<TEntity, ListParameter>.Enable);
     private const string _listAction = nameof(AbstractCrudController<TEntity, ListParameter>.List);
 
-    private static readonly string _controllerName = Utils.ControllerName<TEntity>();
+    private static readonly string _controllerName = Utils.ControllerNameForEntity<TEntity>();
 
     public CrudRouter(LinkGenerator linkGenerator)
         : base(linkGenerator)

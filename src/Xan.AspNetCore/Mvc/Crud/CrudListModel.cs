@@ -6,8 +6,8 @@ using Xan.Extensions.Collections.Generic;
 
 namespace Xan.AspNetCore.Mvc.Crud;
 
-public sealed class CrudListModel<TEntity, TListParameter, TRouter>
-    : PaginatedList<CrudItemModel<TEntity>>
+public sealed class CrudListModel<TEntity, TListParameter, TRouter>(IPaginatedList<CrudItemModel<TEntity>> items, TListParameter parameter, CrudListModel<TEntity, TListParameter, TRouter>.CreateTableDelegate createTableAsync, TRouter router, string listTitle, string createText)
+    : PaginatedList<CrudItemModel<TEntity>>(items)
     , ICrudListModel
     where TEntity : class, ICrudEntity, new()
     where TListParameter : ListParameter
@@ -15,34 +15,22 @@ public sealed class CrudListModel<TEntity, TListParameter, TRouter>
 {
     public delegate Task<IHtmlContent> CreateTableDelegate(ViewContext viewContext, IPaginatedList<CrudItemModel<TEntity>> items);
 
-    private readonly CreateTableDelegate _createTableAsync;
-
-    public CrudListModel(IPaginatedList<CrudItemModel<TEntity>> items, TListParameter parameter, CreateTableDelegate createTableAsync, TRouter router, string listTitle, string createText)
-        : base(items)
-    {
-        _createTableAsync = createTableAsync;
-        Parameter = parameter;
-        Router = router;
-        ListTitle = listTitle;
-        CreateText = createText;
-    }
-
     ListParameter ICrudListModel.Parameter { get => Parameter; }
 
-    public TListParameter Parameter { get; }
+    public TListParameter Parameter { get; } = parameter ?? throw new ArgumentNullException(nameof(parameter));
 
     ICrudRouter ICrudListModel.Router { get => Router; }
 
-    public TRouter Router { get; }
+    public TRouter Router { get; } = router ?? throw new ArgumentNullException(nameof(router));
 
-    public string ListTitle { get; }
+    public string ListTitle { get; } = listTitle ?? throw new ArgumentNullException(nameof(listTitle));
 
-    public string CreateText { get; }
+    public string CreateText { get; } = createText ?? throw new ArgumentNullException(nameof(createText));
 
     public async Task<IHtmlContent> TableAsync(ViewContext viewContext)
     {
         ArgumentNullException.ThrowIfNull(viewContext);
 
-        return await _createTableAsync(viewContext, this);
+        return await createTableAsync(viewContext, this);
     }
 }

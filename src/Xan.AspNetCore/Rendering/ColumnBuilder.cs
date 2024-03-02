@@ -3,19 +3,13 @@ using Microsoft.Extensions.Localization;
 
 namespace Xan.AspNetCore.Rendering;
 
-public sealed class ColumnBuilder<T>
+public sealed class ColumnBuilder<T>(IHtmlFactory html, IStringLocalizer localizer)
 {
     private readonly ColumnConfig<T> _config = new();
 
-    public ColumnBuilder(IHtmlFactory html, IStringLocalizer localizer)
-    {
-        Html = html ?? throw new ArgumentNullException(nameof(html));
-        Localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-    }
+    public IHtmlFactory Html { get; } = html ?? throw new ArgumentNullException(nameof(html));
 
-    public IHtmlFactory Html { get; }
-
-    public IStringLocalizer Localizer { get; }
+    public IStringLocalizer Localizer { get; } = localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     public ColumnBuilder<T> Align(ColumnAlign align)
     {

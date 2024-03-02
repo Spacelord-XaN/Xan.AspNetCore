@@ -1,5 +1,4 @@
-﻿using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Xan.AspNetCore.Mvc.Crud;
 
 namespace Xan.AspNetCore.Tests.Mvc.Crud.AbstractCrudControllerTests;

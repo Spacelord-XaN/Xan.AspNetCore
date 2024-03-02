@@ -4,14 +4,9 @@ using Xan.AspNetCore.Models;
 
 namespace Xan.AspNetCore.Rendering;
 
-public class AbstractSelectListService
+public class AbstractSelectListService(IStringLocalizer localizer)
 {
-    public AbstractSelectListService(IStringLocalizer localizer)
-    {
-        Localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-    }
-    
-    public IStringLocalizer Localizer { get; }
+    public IStringLocalizer Localizer { get; } = localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     public SelectList States(bool includeAll = false)
         => EnumSelectList<ObjectState>(includeAll, XanAspNetCoreTexts.Singluar);

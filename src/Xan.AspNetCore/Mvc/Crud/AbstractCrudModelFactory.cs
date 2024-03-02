@@ -6,19 +6,14 @@ using Xan.Extensions.Collections.Generic;
 
 namespace Xan.AspNetCore.Mvc.Crud;
 
-public abstract class AbstractCrudModelFactory<TEntity, TListParameter, TRouter>
+public abstract class AbstractCrudModelFactory<TEntity, TListParameter, TRouter>(TRouter router)
     : ICrudModelFactory<TEntity, TListParameter>
     where TEntity : class, ICrudEntity, new()
     where TListParameter : ListParameter, new()
     where TRouter : ICrudRouter
 
 {
-    public AbstractCrudModelFactory(TRouter router)
-    {
-        Router = router ?? throw new ArgumentNullException(nameof(router));
-    }
-
-    protected TRouter Router { get; }
+    protected TRouter Router { get; } = router ?? throw new ArgumentNullException(nameof(router));
 
     protected abstract string CreateTitle { get; }
 

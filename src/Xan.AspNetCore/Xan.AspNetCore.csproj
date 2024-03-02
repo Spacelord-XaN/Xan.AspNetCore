@@ -46,4 +46,8 @@
     <PackageReference Include="Xan.Extensions" Version="0.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Xan.AspNetCore.Tests" />
+  </ItemGroup>
+
 </Project>

@@ -15,7 +15,7 @@ public class DateInput
         IInputBuilder result = sut.DateInput("BirthDate", new DateOnly(1234, 12, 31));
 
         //  Assert
-        result.Should().Html("""<input id="id_BirthDate" name="BirthDate" type="date" value="1234-12-31"></input>""");
+        result.Should().BeHtml("""<input id="id_BirthDate" name="BirthDate" type="date" value="1234-12-31"></input>""");
     }
 
     [Fact]
@@ -28,6 +28,6 @@ public class DateInput
         IInputBuilder result = sut.DateInput("BirthDate", new DateTime(1234, 12, 31, 11, 22, 33));
 
         //  Assert
-        result.Should().Html("""<input id="id_BirthDate" name="BirthDate" type="date" value="1234-12-31"></input>""");
+        result.Should().BeHtml("""<input id="id_BirthDate" name="BirthDate" type="date" value="1234-12-31"></input>""");
     }
 }

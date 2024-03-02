@@ -16,7 +16,7 @@ public class SelectOption
         TagBuilder option = sut.SelectOption("ThisIsTheText", "ThisIsTheValue", true);
 
         //  Assert
-        option.Should().Html("""<option selected="" value="ThisIsTheValue">ThisIsTheText</option>""");
+        option.Should().BeHtml("""<option selected="" value="ThisIsTheValue">ThisIsTheText</option>""");
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class SelectOption
         TagBuilder option = sut.SelectOption("ThisIsTheText", "ThisIsTheValue", false);
 
         //  Assert
-        option.Should().Html("""<option value="ThisIsTheValue">ThisIsTheText</option>""");
+        option.Should().BeHtml("""<option value="ThisIsTheValue">ThisIsTheText</option>""");
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class SelectOption
         TagBuilder option = sut.SelectOption("ThisIsTheText", null, false);
 
         //  Assert
-        option.Should().Html("""<option value="null">ThisIsTheText</option>""");
+        option.Should().BeHtml("""<option value="null">ThisIsTheText</option>""");
     }
 
     [Fact]
@@ -55,6 +55,6 @@ public class SelectOption
         TagBuilder option = sut.SelectOption("ThisIsTheText", null, true);
 
         //  Assert
-        option.Should().Html("""<option selected="" value="null">ThisIsTheText</option>""");
+        option.Should().BeHtml("""<option selected="" value="null">ThisIsTheText</option>""");
     }
 }

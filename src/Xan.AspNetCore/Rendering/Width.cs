@@ -54,4 +54,31 @@ public sealed class Width
         }
         return "%";
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is Width other)
+        {
+            return _isAuto == other._isAuto
+                && _percentage == other._percentage
+                && _unit == other._unit;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+        => HashCode.Combine(_percentage, _isAuto, _unit);
+
+    public override string ToString()
+    {
+        if (_isAuto)
+        {
+            return "Auto";
+        }
+        if (_percentage.HasValue)
+        {
+            return $"{_percentage.Value}{GetUnit()}";
+        }
+        return GetUnit();
+    }
 }

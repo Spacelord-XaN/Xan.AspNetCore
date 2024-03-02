@@ -15,7 +15,7 @@ public class DataList
         IInputBuilder result = factory.DataList("MyName", "MyValue", new HashSet<string?>());
 
         //  Assert
-        result.Should().Html("""<input id="id_MyName" list="id_MyNameOptions" name="MyName" type="text" value="MyValue"></input><datalist id="id_MyNameOptions" name="MyNameOptions"></datalist>""");
+        result.Should().BeHtml("""<input id="id_MyName" list="id_MyNameOptions" name="MyName" type="text" value="MyValue"></input><datalist id="id_MyNameOptions" name="MyNameOptions"></datalist>""");
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class DataList
         IInputBuilder result = factory.DataList("MyName", "MyValue", new HashSet<string?>(), autoFocus: true);
 
         //  Assert
-        result.Should().Html("""<input autofocus="" id="id_MyName" list="id_MyNameOptions" name="MyName" type="text" value="MyValue"></input><datalist id="id_MyNameOptions" name="MyNameOptions"></datalist>""");
+        result.Should().BeHtml("""<input autofocus="" id="id_MyName" list="id_MyNameOptions" name="MyName" type="text" value="MyValue"></input><datalist id="id_MyNameOptions" name="MyNameOptions"></datalist>""");
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class DataList
         IInputBuilder result = factory.DataList("MyName", value, new HashSet<string?>());
 
         //  Assert
-        result.Should().Html("""<input id="id_MyName" list="id_MyNameOptions" name="MyName" type="text"></input><datalist id="id_MyNameOptions" name="MyNameOptions"></datalist>""");
+        result.Should().BeHtml("""<input id="id_MyName" list="id_MyNameOptions" name="MyName" type="text"></input><datalist id="id_MyNameOptions" name="MyNameOptions"></datalist>""");
     }
 
     [Fact]
@@ -56,7 +56,7 @@ public class DataList
         IInputBuilder result = factory.DataList("MyName", "MyValue", items);
 
         //  Assert
-        result.Should().Html("""<input id="id_MyName" list="id_MyNameOptions" name="MyName" type="text" value="MyValue"></input><datalist id="id_MyNameOptions" name="MyNameOptions"><option value="Item1"></option><option value="Item2"></option></datalist>""");
+        result.Should().BeHtml("""<input id="id_MyName" list="id_MyNameOptions" name="MyName" type="text" value="MyValue"></input><datalist id="id_MyNameOptions" name="MyNameOptions"><option value="Item1"></option><option value="Item2"></option></datalist>""");
     }
 
     [Fact]
@@ -70,6 +70,6 @@ public class DataList
         IInputBuilder result = factory.DataList("MyName", "MyValue", items, autoFocus: true);
 
         //  Assert
-        result.Should().Html("""<input autofocus="" id="id_MyName" list="id_MyNameOptions" name="MyName" type="text" value="MyValue"></input><datalist id="id_MyNameOptions" name="MyNameOptions"><option value="Item1"></option><option value="Item2"></option></datalist>""");
+        result.Should().BeHtml("""<input autofocus="" id="id_MyName" list="id_MyNameOptions" name="MyName" type="text" value="MyValue"></input><datalist id="id_MyNameOptions" name="MyNameOptions"><option value="Item1"></option><option value="Item2"></option></datalist>""");
     }
 }

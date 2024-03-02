@@ -16,7 +16,7 @@ public class Option
         TagBuilder option = sut.Option("ThisIsTheValue");
 
         //  Assert
-        option.Should().Html("""<option value="ThisIsTheValue"></option>""");
+        option.Should().BeHtml("""<option value="ThisIsTheValue"></option>""");
     }
 
     [Fact]
@@ -29,6 +29,6 @@ public class Option
         TagBuilder option = sut.Option(null);
 
         //  Assert
-        option.Should().Html("""<option value="null"></option>""");
+        option.Should().BeHtml("""<option value="null"></option>""");
     }
 }

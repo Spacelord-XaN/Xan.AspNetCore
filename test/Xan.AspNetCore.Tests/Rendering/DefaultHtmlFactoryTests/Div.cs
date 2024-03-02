@@ -12,6 +12,6 @@ public class Div
         DefaultHtmlFactory sut = new(new StringLocalizerMock());
 
         TagBuilder div = sut.Div();
-        div.Should().Html("<div></div>");
+        div.Should().BeHtml("<div></div>");
     }
 }

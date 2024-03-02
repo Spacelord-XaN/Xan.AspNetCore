@@ -1,14 +1,8 @@
 ﻿namespace Xan.AspNetCore.Mvc.Crud;
 
-public sealed class CrudItemModel<TEntity>
+public sealed class CrudItemModel<TEntity>(TEntity entity, bool canDelete)
 {
-    public CrudItemModel(TEntity entity, bool canDelete)
-    {
-        Entity = entity ?? throw new ArgumentNullException(nameof(entity));
-        CanDelete = canDelete;
-    }
+    public TEntity Entity { get; } = entity ?? throw new ArgumentNullException(nameof(entity));
 
-    public TEntity Entity { get; }
-
-    public bool CanDelete { get; }
+    public bool CanDelete { get; } = canDelete;
 }

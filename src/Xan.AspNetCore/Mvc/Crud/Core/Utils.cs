@@ -4,7 +4,7 @@ namespace Xan.AspNetCore.Mvc.Crud.Core;
 
 internal static class Utils
 {
-    public static string ControllerName<TEntity>()
+    public static string ControllerNameForEntity<TEntity>()
         where TEntity : class, ICrudEntity
     {
         Type entityType = typeof(TEntity);

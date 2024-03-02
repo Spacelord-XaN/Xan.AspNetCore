@@ -16,7 +16,7 @@ public class Select_StringValue
         IInputBuilder result = factory.Select("MyName", "MyValue", new SelectList(Enumerable.Empty<string>()));
 
         //  Assert
-        result.Should().Html("""<select id="id_MyName" name="MyName"></select>""");
+        result.Should().BeHtml("""<select id="id_MyName" name="MyName"></select>""");
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class Select_StringValue
         IInputBuilder result = factory.Select("MyName", "MyValue", new SelectList(Enumerable.Empty<string>()), submitOnChange: true);
 
         //  Assert
-        result.Should().Html("""<select id="id_MyName" name="MyName" onchange="this.form.submit()"></select>""");
+        result.Should().BeHtml("""<select id="id_MyName" name="MyName" onchange="this.form.submit()"></select>""");
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class Select_StringValue
         IInputBuilder result = factory.Select("MyName", "MyValue", new SelectList(Enumerable.Empty<string>()), autoFocus: true);
 
         //  Assert
-        result.Should().Html("""<select autofocus="" id="id_MyName" name="MyName"></select>""");
+        result.Should().BeHtml("""<select autofocus="" id="id_MyName" name="MyName"></select>""");
     }
 
     [Fact]
@@ -56,7 +56,7 @@ public class Select_StringValue
         IInputBuilder result = factory.Select("MyName", value, new SelectList(Enumerable.Empty<string>()));
 
         //  Assert
-        result.Should().Html("""<select id="id_MyName" name="MyName"></select>""");
+        result.Should().BeHtml("""<select id="id_MyName" name="MyName"></select>""");
     }
 
     [Fact]
@@ -70,7 +70,7 @@ public class Select_StringValue
         IInputBuilder result = factory.Select("MyName", "MyValue", items);
 
         //  Assert
-        result.Should().Html("""<select id="id_MyName" name="MyName"><option value="null">Item1</option><option value="null">Item2</option></select>""");
+        result.Should().BeHtml("""<select id="id_MyName" name="MyName"><option value="null">Item1</option><option value="null">Item2</option></select>""");
     }
 
     [Fact]
@@ -84,6 +84,6 @@ public class Select_StringValue
         IInputBuilder result = factory.Select("MyName", "MyValue", items, submitOnChange: true, autoFocus: true);
 
         //  Assert
-        result.Should().Html("""<select autofocus="" id="id_MyName" name="MyName" onchange="this.form.submit()"><option value="null">Item1</option><option value="null">Item2</option></select>""");
+        result.Should().BeHtml("""<select autofocus="" id="id_MyName" name="MyName" onchange="this.form.submit()"><option value="null">Item1</option><option value="null">Item2</option></select>""");
     }
 }

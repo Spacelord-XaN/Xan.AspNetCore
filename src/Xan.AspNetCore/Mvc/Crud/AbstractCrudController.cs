@@ -65,7 +65,7 @@ public abstract class AbstractCrudController<TEntity, TListParameter, TRouter, T
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        SetValidationResult(_validator.Validate(entity));
+        SetValidationResult(await _validator.ValidateAsync(entity));
 
         if (ModelState.IsValid)
         {
@@ -107,7 +107,7 @@ public abstract class AbstractCrudController<TEntity, TListParameter, TRouter, T
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        SetValidationResult(_validator.Validate(entity));
+        SetValidationResult(await _validator.ValidateAsync(entity));
 
         if (ModelState.IsValid)
         {

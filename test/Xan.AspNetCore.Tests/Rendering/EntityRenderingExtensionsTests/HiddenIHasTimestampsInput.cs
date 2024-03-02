@@ -19,6 +19,6 @@ public class HiddenIHasTimestampsInput
         IHtmlContent result = sut.HiddenIHasTimestampsInput(entity);
 
         //  Assert
-        result.Should().Html("""<input id="id_CreatedAt" name="CreatedAt" type="hidden" value="2063-04-05T11:22"></input>""");
+        result.Should().BeHtml("""<input id="id_CreatedAt" name="CreatedAt" type="hidden" value="2063-04-05T11:22"></input>""");
     }
 }

@@ -2,16 +2,10 @@
 
 namespace Xan.AspNetCore.Mvc.Routing;
 
-public class ControllerRouter
-    : LinkRouter
+public class ControllerRouter(string controller, LinkGenerator linkGenerator)
+    : LinkRouter(linkGenerator)
 {
-    public ControllerRouter(string controller, LinkGenerator linkGenerator)
-        : base(linkGenerator)
-    {
-        Controller = controller ?? throw new ArgumentNullException(nameof(controller));
-    }
-
-    protected string Controller { get; }
+    protected string Controller { get; } = controller ?? throw new ArgumentNullException(nameof(controller));
 
     public string GetUriByAction(string action, object? values = null)
     {
