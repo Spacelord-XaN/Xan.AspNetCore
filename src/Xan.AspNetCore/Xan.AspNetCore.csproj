@@ -42,8 +42,8 @@
       <PackagePath>\</PackagePath>
     </None>
     <PackageReference Include="FluentValidation" Version="11.9.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
-    <PackageReference Include="Xan.Extensions" Version="0.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+    <PackageReference Include="Xan.Extensions" Version="0.4.1" />
   </ItemGroup>
 
   <ItemGroup>
