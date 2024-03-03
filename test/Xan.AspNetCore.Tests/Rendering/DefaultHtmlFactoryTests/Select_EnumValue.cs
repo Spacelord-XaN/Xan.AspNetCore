@@ -3,12 +3,18 @@ using Xan.AspNetCore.Rendering;
 
 namespace Xan.AspNetCore.Tests.Rendering.DefaultHtmlFactoryTests;
 
-public class Select_StringValue
+public class Select_EnumValue
      : TestBase
 {
+    public enum MyEnum
+    {
+        Item1,
+        Item2
+    }
+
     [Theory]
     [AutoData]
-    public void NoItems(string name, string value)
+    public void NoItems(string name, MyEnum value)
     {
         //  Arrange
 
@@ -21,7 +27,7 @@ public class Select_StringValue
 
     [Theory]
     [AutoData]
-    public void NoItems_SubmitOnChange(string name, string value)
+    public void NoItems_SubmitOnChange(string name, MyEnum value)
     {
         //  Arrange
 
@@ -34,7 +40,7 @@ public class Select_StringValue
 
     [Theory]
     [AutoData]
-    public void NoItems_AutoFocus(string name, string value)
+    public void NoItems_AutoFocus(string name, MyEnum value)
     {
         //  Arrange
 
@@ -50,7 +56,7 @@ public class Select_StringValue
     public void NoItems_ValueIsNull(string name)
     {
         //  Arrange
-        string? value = null;
+        MyEnum? value = null;
 
         //  Act
         IInputBuilder result = Sut.Select(name, value, new SelectList(Enumerable.Empty<string>()));
@@ -61,7 +67,7 @@ public class Select_StringValue
 
     [Theory]
     [AutoData]
-    public void WithItems(string name, string value, string item1, string item2)
+    public void WithItems(string name, MyEnum value, string item1, string item2)
     {
         //  Arrange
         SelectList items = new (new[] { item1, item2 });
@@ -75,7 +81,7 @@ public class Select_StringValue
 
     [Theory]
     [AutoData]
-    public void WithAll(string name, string value, string item1, string item2)
+    public void WithAll(string name, MyEnum value, string item1, string item2)
     {
         //  Arrange
         SelectList items = new(new[] { item1, item2 });

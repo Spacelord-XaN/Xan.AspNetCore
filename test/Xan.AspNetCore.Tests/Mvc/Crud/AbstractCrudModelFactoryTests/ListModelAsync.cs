@@ -12,7 +12,6 @@ public class ListModelAsync
     public async Task ShouldReturnNewModel(ListParameter parameter, CrudItemModel<TestEntity>[] items, int pageIndex, int pageSize, int totalPageCount, int totalItemCount)
     {
         //  Arrange
-        A.CallTo(() => Router.Equals(Router)).Returns(true);
         IPaginatedList<CrudItemModel<TestEntity>> paginatedList = new PaginatedList<CrudItemModel<TestEntity>>(items, pageIndex, pageSize, totalPageCount, totalItemCount);
 
         //  Act
@@ -28,7 +27,7 @@ public class ListModelAsync
             listModel.PageIndex.Should().Be(pageIndex);
             listModel.PageSize.Should().Be(pageSize);
             listModel.Parameter.Should().Be(parameter);
-            listModel.Router.Should().Be(Router);
+            listModel.Router.Should().BeSameAs(Router);
         }
     }
 }

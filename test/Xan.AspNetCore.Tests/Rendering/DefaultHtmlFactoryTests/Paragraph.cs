@@ -2,7 +2,7 @@
 
 namespace Xan.AspNetCore.Tests.Rendering.DefaultHtmlFactoryTests;
 
-public class Span
+public class Paragraph
      : TestBase
 {
     [Fact]
@@ -11,9 +11,9 @@ public class Span
         //  Arrange
 
         //  Act
-        TagBuilder result = Sut.Span();
+        TagBuilder result = Sut.Paragraph();
 
         //  Assert
-        result.Should().BeHtml("""<span></span>""");
+        result.Should().BeHtml("""<p></p>""");
     }
 }

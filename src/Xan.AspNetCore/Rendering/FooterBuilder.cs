@@ -3,19 +3,13 @@ using Microsoft.Extensions.Localization;
 
 namespace Xan.AspNetCore.Rendering;
 
-public sealed class FooterBuilder
+public sealed class FooterBuilder(IHtmlFactory html, IStringLocalizer localizer)
 {
     private readonly ColumnFooterConfig _config = new();
 
-    public FooterBuilder(IHtmlFactory html, IStringLocalizer localizer)
-    {
-        Html = html ?? throw new ArgumentNullException(nameof(html));
-        Localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-    }
+    public IHtmlFactory Html { get; } = html ?? throw new ArgumentNullException(nameof(html));
 
-    public IHtmlFactory Html { get; }
-
-    public IStringLocalizer Localizer { get; }
+    public IStringLocalizer Localizer { get; } = localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     public FooterBuilder Align(ColumnAlign align)
     {

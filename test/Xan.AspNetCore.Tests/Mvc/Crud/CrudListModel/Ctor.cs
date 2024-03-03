@@ -14,7 +14,6 @@ public class Ctor
         IPaginatedList<CrudItemModel<TestEntity>> paginatedList = new PaginatedList<CrudItemModel<TestEntity>>(items, pageIndex, pageSize, totalPageCount, totalItemCount);
         CrudListModel<TestEntity, ListParameter, ICrudRouter>.CreateTableDelegate createTableDelegate = X.StrictFake<CrudListModel<TestEntity, ListParameter, ICrudRouter>.CreateTableDelegate>();
         ICrudRouter router = X.StrictFake<ICrudRouter>();
-        A.CallTo(() => router.Equals(router)).Returns(true);
 
         //  Act
         CrudListModel<TestEntity, ListParameter, ICrudRouter> result = new(paginatedList, parameter, createTableDelegate, router, listTitle, createText);
@@ -27,7 +26,7 @@ public class Ctor
             result.PageIndex.Should().Be(pageIndex);
             result.PageSize.Should().Be(pageSize);
             result.Parameter.Should().Be(parameter);
-            result.Router.Should().Be(router);
+            result.Router.Should().BeSameAs(router);
         }
     }
 }

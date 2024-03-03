@@ -2,18 +2,18 @@
 
 namespace Xan.AspNetCore.Tests.Rendering.DefaultHtmlFactoryTests;
 
-public class Span
-     : TestBase
+public class Label
+    : TestBase
 {
     [Fact]
-    public void ShouldReturnCorrectHtml()
+    public void ReturnsHtml()
     {
         //  Arrange
 
         //  Act
-        TagBuilder result = Sut.Span();
-
+        TagBuilder div = Sut.Label();
+        
         //  Assert
-        result.Should().BeHtml("""<span></span>""");
+        div.Should().BeHtml("<label></label>");
     }
 }

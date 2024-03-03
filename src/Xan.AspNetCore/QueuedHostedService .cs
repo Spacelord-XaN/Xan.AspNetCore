@@ -4,22 +4,14 @@ using Xan.Extensions.Tasks;
 
 namespace Xan.AspNetCore;
 
-public sealed class QueuedHostedService
-    : BackgroundService
+public sealed class QueuedHostedService(IBackgroundTaskQueue taskQueue, ILogger<QueuedHostedService> logger)
+        : BackgroundService
 {
-    private readonly ILogger<QueuedHostedService> _logger;
-
-    public QueuedHostedService(IBackgroundTaskQueue taskQueue, ILogger<QueuedHostedService> logger)
-    {
-        TaskQueue = taskQueue ?? throw new ArgumentNullException(nameof(taskQueue));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
-
-    public IBackgroundTaskQueue TaskQueue { get; }
+    public IBackgroundTaskQueue TaskQueue { get; } = taskQueue ?? throw new ArgumentNullException(nameof(taskQueue));
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Queued Hosted Service is running.");
+        logger.LogInformation("Queued Hosted Service is running.");
 
         await BackgroundProcessing(stoppingToken);
     }
@@ -40,14 +32,14 @@ public sealed class QueuedHostedService
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex, "Error occurred executing {WorkItem}.", nameof(workItem));
+                logger.LogCritical(ex, "Error occurred executing {WorkItem}.", nameof(workItem));
             }
         }
     }
 
     public async override Task StopAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Queued Hosted Service is stopping.");
+        logger.LogInformation("Queued Hosted Service is stopping.");
 
         await base.StopAsync(stoppingToken);
     }

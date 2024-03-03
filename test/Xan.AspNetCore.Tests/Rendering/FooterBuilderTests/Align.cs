@@ -1,6 +1,6 @@
 ﻿using Xan.AspNetCore.Rendering;
 
-namespace Xan.AspNetCore.Tests.Rendering.ColumnBuilderTests;
+namespace Xan.AspNetCore.Tests.Rendering.FooterBuilderTests;
 
 public class Align
     : TestBase
@@ -12,7 +12,7 @@ public class Align
         //  Arrange
 
         //  Act
-        ColumnConfig<int> result = Sut.Align(align).Build();
+        ColumnFooterConfig result = Sut.Align(align).Build();
 
         //  Assert
         result.Align.Should().Be(align);

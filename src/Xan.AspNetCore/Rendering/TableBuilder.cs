@@ -4,23 +4,14 @@ using Microsoft.Extensions.Localization;
 
 namespace Xan.AspNetCore.Rendering;
 
-public class TableBuilder<T>
+public class TableBuilder<T>(IEnumerable<T> items, IHtmlFactory html, IStringLocalizer localizer)
     : List<ColumnConfig<T>>
 {
-    private readonly IEnumerable<T> _items;
+    public IHtmlFactory Html { get; } = html ?? throw new ArgumentNullException(nameof(html));
 
-    public TableBuilder(IEnumerable<T> items, IHtmlFactory html, IStringLocalizer localizer)
-    {
-        _items = items ?? throw new ArgumentNullException(nameof(items));
-        Html = html ?? throw new ArgumentNullException(nameof(html));
-        Localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-    }
+    public IStringLocalizer Localizer { get; } = localizer ?? throw new ArgumentNullException(nameof(localizer));
 
-    public IHtmlFactory Html { get; }
-
-    public IStringLocalizer Localizer { get; }
-
-    public IHtmlContent Build()
+    public TagBuilder Build()
     {
         TagBuilder table = Html.Table();
 
@@ -59,7 +50,7 @@ public class TableBuilder<T>
         return this;
     }
 
-    private IHtmlContent CreateHeader()
+    private TagBuilder CreateHeader()
     {
         IHtmlContent cells = CreateHeaderCells();
 
@@ -72,7 +63,7 @@ public class TableBuilder<T>
         return tHead;
     }
 
-    private IHtmlContent CreateHeaderCells()
+    private HtmlContentBuilder CreateHeaderCells()
     {
         HtmlContentBuilder cells = new();
         foreach (ColumnConfig<T> config in this)
@@ -83,7 +74,7 @@ public class TableBuilder<T>
         return cells;
     }
 
-    private IHtmlContent CreateHeaderCell(ColumnConfig<T> config)
+    private TagBuilder CreateHeaderCell(ColumnConfig<T> config)
     {
         TagBuilder th = Html.Th(TableScope.Col);
         th.SetStyle(config.GetHeaderStyle());
@@ -91,12 +82,12 @@ public class TableBuilder<T>
         return th;
     }
 
-    private IHtmlContent CreateBody()
+    private TagBuilder CreateBody()
     {
         TagBuilder tBody = Html.TBody();
 
         int index = 0;
-        foreach (T item in _items)
+        foreach (T item in items)
         {
             if (item == null)
             {
@@ -114,7 +105,7 @@ public class TableBuilder<T>
         return tBody;
     }
 
-    private IHtmlContent CreateBodyCells(int index, T item)
+    private HtmlContentBuilder CreateBodyCells(int index, T item)
     {
         HtmlContentBuilder cells = new();
         foreach (ColumnConfig<T> config in this)
@@ -125,7 +116,7 @@ public class TableBuilder<T>
         return cells;
     }
 
-    private IHtmlContent CreateBodyCell(int index, T item, ColumnConfig<T> config)
+    private TagBuilder CreateBodyCell(int index, T item, ColumnConfig<T> config)
     {
         TagBuilder td = Html.Td(TableScope.None);
         td.SetStyle(config.GetStyle());
@@ -134,7 +125,7 @@ public class TableBuilder<T>
         return td;
     }
 
-    private IHtmlContent CreateFooter()
+    private TagBuilder CreateFooter()
     {
         TagBuilder tr = Html.Tr();
         foreach (ColumnConfig<T> config in this)
@@ -148,7 +139,7 @@ public class TableBuilder<T>
         return tFoot;
     }
 
-    private IHtmlContent GetFooter(ColumnConfig<T> config)
+    private TagBuilder GetFooter(ColumnConfig<T> config)
     {
         TagBuilder th = Html.Td(TableScope.Col);
         if (config.Footer != null)
