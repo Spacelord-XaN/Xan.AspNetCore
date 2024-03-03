@@ -1,60 +1,59 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Xan.AspNetCore.Rendering;
-using Xan.AspNetCore.Tests.Mockups;
+﻿using Microsoft.AspNetCore.Html;
 
-namespace Xan.AspNetCore.Tests.Rendering.DefaultHtmlFactoryTests;
+namespace Xan.AspNetCore.Tests.Rendering.DefaultBoostrapHtmlFactoryTests;
 
 public class SelectOption
+     : TestBase
 {
-    [Fact]
-    public void ValueAndSelected_ReturnsHtml()
+    [Theory]
+    [AutoData]
+    public void NotSelected(string text, string value)
     {
         //  Arrange
-        DefaultHtmlFactory sut = new(new StringLocalizerMock());
 
         //  Act
-        TagBuilder option = sut.SelectOption("ThisIsTheText", "ThisIsTheValue", true);
+        IHtmlContent result = Sut.SelectOption(text, value, false);
 
         //  Assert
-        option.Should().BeHtml("""<option selected="" value="ThisIsTheValue">ThisIsTheText</option>""");
+        result.Should().BeHtml($"""<option value="{value}">{text}</option>""");
     }
 
-    [Fact]
-    public void ValueAndNotSelected_ReturnsHtml()
+    [Theory]
+    [AutoData]
+    public void Selected(string text, string value)
     {
         //  Arrange
-        DefaultHtmlFactory sut = new(new StringLocalizerMock());
 
         //  Act
-        TagBuilder option = sut.SelectOption("ThisIsTheText", "ThisIsTheValue", false);
+        IHtmlContent result = Sut.SelectOption(text, value, true);
 
         //  Assert
-        option.Should().BeHtml("""<option value="ThisIsTheValue">ThisIsTheText</option>""");
+        result.Should().BeHtml($"""<option selected="" value="{value}">{text}</option>""");
     }
 
-    [Fact]
-    public void NullValueAndNotSelected_ReturnsHtml()
+    [Theory]
+    [AutoData]
+    public void NotSelected_ValueNull(string text)
     {
         //  Arrange
-        DefaultHtmlFactory sut = new(new StringLocalizerMock());
 
         //  Act
-        TagBuilder option = sut.SelectOption("ThisIsTheText", null, false);
+        IHtmlContent result = Sut.SelectOption(text, null, false);
 
         //  Assert
-        option.Should().BeHtml("""<option value="null">ThisIsTheText</option>""");
+        result.Should().BeHtml($"""<option value="null">{text}</option>""");
     }
 
-    [Fact]
-    public void NullValueAndSelected_ReturnsHtml()
+    [Theory]
+    [AutoData]
+    public void Selected_ValueNull(string text)
     {
         //  Arrange
-        DefaultHtmlFactory sut = new(new StringLocalizerMock());
 
         //  Act
-        TagBuilder option = sut.SelectOption("ThisIsTheText", null, true);
+        IHtmlContent result = Sut.SelectOption(text, null, true);
 
         //  Assert
-        option.Should().BeHtml("""<option selected="" value="null">ThisIsTheText</option>""");
+        result.Should().BeHtml($"""<option selected="" value="null">{text}</option>""");
     }
 }

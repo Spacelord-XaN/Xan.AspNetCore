@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Xan.AspNetCore.Rendering;
-using Xan.AspNetCore.Tests.Mockups;
 
 namespace Xan.AspNetCore.Tests.Rendering.DefaultHtmlFactoryTests;
 
 public class Div
+    : TestBase
 {
     [Fact]
     public void ReturnsHtml()
     {
-        DefaultHtmlFactory sut = new(new StringLocalizerMock());
+        //  Arrange
 
-        TagBuilder div = sut.Div();
+        //  Act
+        TagBuilder div = Sut.Div();
+        
+        //  Assert
         div.Should().BeHtml("<div></div>");
     }
 }
