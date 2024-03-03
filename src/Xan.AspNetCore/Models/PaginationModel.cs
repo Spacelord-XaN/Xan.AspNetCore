@@ -20,11 +20,11 @@ public sealed class PaginationModel(IPaginatedList items, ListParameter currentP
         {
             throw new ArgumentOutOfRangeException(nameof(pageIndex), "The page index must be greater that 0. The first page has index 1.");
         }
-        if (pageIndex > totalPages)
+        if (pageIndex != 1 && totalPages != 0 && pageIndex > totalPages)
         {
             throw new ArgumentOutOfRangeException(nameof(pageIndex), "The page index is greater than the total pages.");
         }
-        if (totalPages <= 0)
+        if (pageIndex != 1 && totalPages <= 0)
         {
             throw new ArgumentOutOfRangeException(nameof(totalPages), "Total pages must be greater that 0.");
         }

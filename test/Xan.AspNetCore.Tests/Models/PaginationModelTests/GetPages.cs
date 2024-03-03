@@ -10,8 +10,7 @@ public class GetPages
     [
         [ int.MaxValue, int.MinValue ],
         [ int.MaxValue, 0 ],
-        [ 0, 1 ],
-        [ int.MinValue, 1 ],
+        [ int.MinValue, 2 ],
         [ int.MinValue, int.MaxValue ]
     ];
 
@@ -44,6 +43,8 @@ public class GetPages
 
     public static object[][] ShouldReturnExpectedPagesTestData =
     [
+        [0, 1, new int?[] { }],
+
         [1, 1, new int? [] { 1 }],
 
         [2, 1, new int? [] { 1, 2 }],
