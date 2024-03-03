@@ -12,7 +12,23 @@ public static class ColumnBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(getInt);
 
-        return builder.For(item => getInt(item).ToHtml());
+        return builder.For(item => getInt(item).ToHtmlDisplay());
+    }
+
+    public static ColumnBuilder<T> For<T>(this ColumnBuilder<T> builder, Func<T, double?> getDouble)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(getDouble);
+
+        return builder.For(item => getDouble(item).ToHtmlDisplay());
+    }
+
+    public static ColumnBuilder<T> For<T>(this ColumnBuilder<T> builder, Func<T, decimal?> getDecimal)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(getDecimal);
+
+        return builder.For(item => getDecimal(item).ToHtmlDisplay());
     }
 
     public static ColumnBuilder<T> For<T>(this ColumnBuilder<T> builder, Func<T, string?> getString)
@@ -20,7 +36,7 @@ public static class ColumnBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(getString);
 
-        return builder.For(item => getString(item).ToHtml());
+        return builder.For(item => getString(item).ToHtmlDisplay());
     }
 
     public static ColumnBuilder<T> For<T>(this ColumnBuilder<T> builder, Func<T, DateTime?> getDateTime)
@@ -28,7 +44,7 @@ public static class ColumnBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(getDateTime);
 
-        return builder.For(item => getDateTime(item).ToHtmlTimeStamp());
+        return builder.For(item => getDateTime(item).ToHtmlTimeStampDisplay());
     }
 
     public static ColumnBuilder<CrudItemModel<T>> ForEditLink<T>(this ColumnBuilder<CrudItemModel<T>> builder, ICrudRouter router)
@@ -56,7 +72,7 @@ public static class ColumnBuilderExtensions
         ArgumentNullException.ThrowIfNull(text);
 
         return builder
-            .ForLink(getUrl, item => text.ToHtml());
+            .ForLink(getUrl, item => text.ToHtmlDisplay());
     }
 
     public static ColumnBuilder<T> ForLink<T>(this ColumnBuilder<T> builder, Func<T, string> getUrl, Func<T, string> getText)
@@ -66,7 +82,7 @@ public static class ColumnBuilderExtensions
         ArgumentNullException.ThrowIfNull(getText);
 
         return builder
-            .ForLink(getUrl, item => getText(item).ToHtml(), item => true);
+            .ForLink(getUrl, item => getText(item).ToHtmlDisplay(), item => true);
     }
 
     public static ColumnBuilder<T> ForLink<T>(this ColumnBuilder<T> builder, Func<T, string> getUrl, Func<T, IHtmlContent> getContent)
@@ -87,7 +103,7 @@ public static class ColumnBuilderExtensions
         ArgumentNullException.ThrowIfNull(isVisible);
 
         return builder
-            .ForLink(getUrl, item => text.ToHtml(), isVisible);
+            .ForLink(getUrl, item => text.ToHtmlDisplay(), isVisible);
     }
 
     public static ColumnBuilder<T> ForLink<T>(this ColumnBuilder<T> builder, Func<T, string> getUrl, Func<T, IHtmlContent> getContent, Func<T, bool> isVisible)
@@ -119,7 +135,7 @@ public static class ColumnBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(getPrice);
 
-        return builder.For(item => getPrice(item).ToHtmlPrice());
+        return builder.For(item => getPrice(item).ToHtmlPriceDisplay());
     }
 
     public static ColumnBuilder<T> Title<T>(this ColumnBuilder<T> builder, string title)
@@ -127,6 +143,6 @@ public static class ColumnBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(title);
 
-        return builder.Title(title.ToHtml());
+        return builder.Title(title.ToHtmlDisplay());
     }
 }

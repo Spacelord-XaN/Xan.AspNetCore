@@ -7,6 +7,6 @@ public static class FooterBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(text);
 
-        return builder.For(text.ToHtml());
+        return builder.For(text.ToHtmlDisplay());
     }
 }

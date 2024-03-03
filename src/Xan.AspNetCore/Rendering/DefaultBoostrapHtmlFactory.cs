@@ -119,7 +119,7 @@ public class DefaultBoostrapHtmlFactory(IStringLocalizer localizer)
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        IInputBuilder input = Input("email", name, value, autoFocus);
+        IInputBuilder input = Input("email", name, value, autoFocus: autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -130,7 +130,7 @@ public class DefaultBoostrapHtmlFactory(IStringLocalizer localizer)
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        IInputBuilder input = NumberInput(name, value, autoFocus);
+        IInputBuilder input = NumberInput(name, value, autoFocus: autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -141,7 +141,7 @@ public class DefaultBoostrapHtmlFactory(IStringLocalizer localizer)
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        IInputBuilder input = NumberInput(name, value, autoFocus);
+        IInputBuilder input = NumberInput(name, value, autoFocus: autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -152,7 +152,7 @@ public class DefaultBoostrapHtmlFactory(IStringLocalizer localizer)
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        IInputBuilder input = NumberInput(name, value, autoFocus);
+        IInputBuilder input = NumberInput(name, value, autoFocus: autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -174,7 +174,7 @@ public class DefaultBoostrapHtmlFactory(IStringLocalizer localizer)
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(title);
 
-        IInputBuilder input = Input("tel", name, value, autoFocus);
+        IInputBuilder input = Input("tel", name, value, autoFocus: autoFocus);
         input.AddCssClass("form-control");
 
         return InputField(name, input, title);
@@ -248,7 +248,7 @@ public class DefaultBoostrapHtmlFactory(IStringLocalizer localizer)
         IHtmlContent htmlTitle;
         if (title != null)
         {
-            htmlTitle = title.ToHtml();
+            htmlTitle = title.ToHtmlDisplay();
         }
         else
         {
@@ -327,10 +327,8 @@ public class DefaultBoostrapHtmlFactory(IStringLocalizer localizer)
         HtmlContentBuilder errorMessages = new();
         if (stateEntry.ValidationState == ModelValidationState.Invalid)
         {
-            foreach (ModelError error in stateEntry.Errors)
-            {
-                errorMessages.AppendHtmlLine(error.ErrorMessage);
-            }
+            string errors = string.Join(Environment.NewLine, stateEntry.Errors.Select(error => error.ErrorMessage));
+            errorMessages.AppendHtml(errors);
         }
         return errorMessages;
     }

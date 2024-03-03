@@ -16,7 +16,35 @@ public class For
         ColumnConfig<object> result = sut.For(_ => value).Build();
 
         //  Assert
-        result.GetContent(index, item).Should().BeHtml(value.ToHtml());
+        result.GetContent(index, item).Should().BeHtml(value.ToHtmlDisplay());
+    }
+
+    [Theory]
+    [AutoData]
+    public void Double(int index, object item, double value)
+    {
+        //  Arrange
+        ColumnBuilder<object> sut = CreateSut<object>();
+
+        //  Act
+        ColumnConfig<object> result = sut.For(_ => value).Build();
+
+        //  Assert
+        result.GetContent(index, item).Should().BeHtml(value.ToHtmlDisplay());
+    }
+
+    [Theory]
+    [AutoData]
+    public void Decimal(int index, object item, decimal value)
+    {
+        //  Arrange
+        ColumnBuilder<object> sut = CreateSut<object>();
+
+        //  Act
+        ColumnConfig<object> result = sut.For(_ => value).Build();
+
+        //  Assert
+        result.GetContent(index, item).Should().BeHtml(value.ToHtmlDisplay());
     }
 
     [Theory]
@@ -45,6 +73,6 @@ public class For
         ColumnConfig<object> result = sut.For(_ => value).Build();
 
         //  Assert
-        result.GetContent(index, item).Should().BeHtml(value.ToHtmlTimeStamp());
+        result.GetContent(index, item).Should().BeHtml(value.ToHtmlTimeStampDisplay());
     }
 }

@@ -5,14 +5,47 @@ namespace Xan.AspNetCore.Rendering;
 
 public static class Extensions
 {
-    public static IHtmlContent ToHtml(this int value)
+    public static IHtmlContent ToHtmlDisplay(this int value)
         => new HtmlString(value.ToString());
 
-    public static IHtmlContent ToHtml(this int? value)
+    public static IHtmlContent ToHtmlDisplay(this int? value)
     {
         if (value.HasValue)
         {
-            return ToHtml(value.Value);
+            return value.Value.ToHtmlDisplay();
+        }
+        return new HtmlString(string.Empty);
+    }
+
+    public static IHtmlContent ToHtmlDisplay(this double value)
+        => new HtmlString(value.ToString());
+
+    public static IHtmlContent ToHtmlDisplay(this double? value)
+    {
+        if (value.HasValue)
+        {
+            return value.Value.ToHtmlDisplay();
+        }
+        return new HtmlString(string.Empty);
+    }
+
+    public static IHtmlContent ToHtmlDisplay(this decimal value)
+        => new HtmlString(value.ToString());
+
+    public static IHtmlContent ToHtmlDisplay(this decimal? value)
+    {
+        if (value.HasValue)
+        {
+            return value.Value.ToHtmlDisplay();
+        }
+        return new HtmlString(string.Empty);
+    }
+
+    public static IHtmlContent ToHtmlDisplay(this string? value)
+    {
+        if (value is not null)
+        {
+            return new HtmlString(value);
         }
         return new HtmlString(string.Empty);
     }
@@ -24,41 +57,40 @@ public static class Extensions
         return new HtmlString(localizedString.Value);
     }
 
-    public static IHtmlContent ToHtml(this string? value)
-        => new HtmlString(value ?? "");
+    public static IHtmlContent ToHtmlDateDisplay(this DateTime value)
+        => new HtmlString(value.ToString("D"));
 
-    public static IHtmlContent ToHtmlDate(this DateTime value)
-    {
-        ArgumentNullException.ThrowIfNull(value);
-
-        return new HtmlString($"{value:D}");
-    }
-
-    public static IHtmlContent ToHtmlTimeStamp(this DateTime value)
-    {
-        ArgumentNullException.ThrowIfNull(value);
-
-        return new HtmlString($"{value:g}");
-    }
-
-    public static IHtmlContent ToHtmlTimeStamp(this DateTime? value)
+    public static IHtmlContent ToHtmlDateDisplay(this DateTime? value)
     {
         if (value.HasValue)
         {
-            return value.Value.ToHtmlTimeStamp();
+            return value.Value.ToHtmlDateDisplay();
         }
 
         return new HtmlString(string.Empty);
     }
 
-    public static IHtmlContent ToHtmlPrice(this decimal value)
-        => new HtmlString($"{value:c}");
+    public static IHtmlContent ToHtmlTimeStampDisplay(this DateTime value)
+        => new HtmlString(value.ToString("g"));
 
-    public static IHtmlContent ToHtmlPrice(this decimal? value)
+    public static IHtmlContent ToHtmlTimeStampDisplay(this DateTime? value)
     {
         if (value.HasValue)
         {
-            return ToHtmlPrice(value.Value);
+            return value.Value.ToHtmlTimeStampDisplay();
+        }
+
+        return new HtmlString(string.Empty);
+    }
+
+    public static IHtmlContent ToHtmlPriceDisplay(this decimal value)
+        => new HtmlString(value.ToString("c"));
+
+    public static IHtmlContent ToHtmlPriceDisplay(this decimal? value)
+    {
+        if (value.HasValue)
+        {
+            return value.Value.ToHtmlPriceDisplay();
         }
         return new HtmlString(string.Empty);
     }

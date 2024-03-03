@@ -10,6 +10,10 @@ public sealed class ShipEntity
     public int LengthInMeters { get; set; }
 
     public DateTime BirthDate { get; set; }
+
+    public decimal  Price { get; set; }
+
+    public double Weight { get; set; }
 }
 
 public sealed class ShipEntityValidator

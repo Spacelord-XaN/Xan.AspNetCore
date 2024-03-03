@@ -16,6 +16,6 @@ public class ForPrice
         ColumnConfig<object> result = sut.ForPrice(_ => value).Build();
 
         //  Assert
-        result.GetContent(index, item).Should().BeHtml(value.ToHtmlPrice());
+        result.GetContent(index, item).Should().BeHtml(value.ToHtmlPriceDisplay());
     }
 }

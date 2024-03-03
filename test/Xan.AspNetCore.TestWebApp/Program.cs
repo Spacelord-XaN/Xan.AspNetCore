@@ -73,11 +73,15 @@ using (IServiceScope scope = app.Services.CreateScope())
         {
             Name = "USS Enterpise",
             LengthInMeters = 123,
+            Price = 123.4M,
+            Weight = 1000.123
         });
         db.Ships.Add(new ShipEntity
         {
             Name = "Voyager",
-            LengthInMeters = 555
+            LengthInMeters = 555,
+            Price = -987.123M,
+            Weight = 44.53
         });
         await db.SaveChangesAsync();
     }

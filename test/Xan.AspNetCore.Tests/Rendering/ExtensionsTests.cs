@@ -13,7 +13,7 @@ public class ExtensionsTests
         int value = 42;
 
         //  Act
-        IHtmlContent result = value.ToHtml();
+        IHtmlContent result = value.ToHtmlDisplay();
 
         //  Assert
         result.Should().BeHtml("42");
@@ -27,7 +27,73 @@ public class ExtensionsTests
         // Arrange
 
         //  Act
-        IHtmlContent result = value.ToHtml();
+        IHtmlContent result = value.ToHtmlDisplay();
+
+        //  Assert
+        result.Should().BeHtml(expectedHtml);
+    }
+    
+    [Fact]
+    public void Double()
+    {
+        // Arrange
+        double value = -42.123;
+
+        //  Act
+        IHtmlContent result = value.ToHtmlDisplay();
+
+        //  Assert
+        result.Should().BeHtml(value.ToString());
+    }
+
+    [Fact]
+    public void NullableDouble()
+    {
+        // Arrange
+        double? value = null;
+
+        //  Act
+        IHtmlContent result = value.ToHtmlDisplay();
+
+        //  Assert
+        result.Should().BeHtml("");
+    }
+
+    [Fact]
+    public void Decimal()
+    {
+        // Arrange
+        decimal value = -42.123M;
+
+        //  Act
+        IHtmlContent result = value.ToHtmlDisplay();
+
+        //  Assert
+        result.Should().BeHtml(value.ToString());
+    }
+
+    [Fact]
+    public void NullableDecimal()
+    {
+        // Arrange
+        decimal? value = null;
+
+        //  Act
+        IHtmlContent result = value.ToHtmlDisplay();
+
+        //  Assert
+        result.Should().BeHtml("");
+    }
+
+    [Theory]
+    [InlineData(null, "")]
+    [InlineData("asdf", "asdf")]
+    public void String(string? value, string expectedHtml)
+    {
+        // Arrange
+
+        //  Act
+        IHtmlContent result = value.ToHtmlDisplay();
 
         //  Assert
         result.Should().BeHtml(expectedHtml);
@@ -48,20 +114,6 @@ public class ExtensionsTests
         result.Should().BeHtml(expectedHtml);
     }
 
-    [Theory]
-    [InlineData(null, "")]
-    [InlineData("asdf", "asdf")]
-    public void String(string? value, string expectedHtml)
-    {
-        // Arrange
-
-        //  Act
-        IHtmlContent result = value.ToHtml();
-
-        //  Assert
-        result.Should().BeHtml(expectedHtml);
-    }
-
     public static TheoryData<DateTime> ToHtmlDateData { get; } = new()
     {
         { new DateTime(2063, 04, 05, 11, 22, 33, 444) },
@@ -70,15 +122,27 @@ public class ExtensionsTests
 
     [Theory]
     [MemberData(nameof(ToHtmlDateData))]
-    public void ToHtmlDate(DateTime value)
+    public void ToHtmlDateDisplay(DateTime value)
     {
         // Arrange
 
         //  Act
-        IHtmlContent result = value.ToHtmlDate();
+        IHtmlContent result = value.ToHtmlDateDisplay();
 
         //  Assert
         result.Should().BeHtml(value.ToLongDateString());
+    }
+
+    [Fact]
+    public void ToHtmlDateDisplay_Null()
+    {
+        // Arrange
+
+        //  Act
+        IHtmlContent result = AspNetCore.Rendering.Extensions.ToHtmlDateDisplay(null);
+
+        //  Assert
+        result.Should().BeHtml("");
     }
 
     public static TheoryData<DateTime> ToHtmlTimeStampData { get; } = new()
@@ -89,24 +153,24 @@ public class ExtensionsTests
 
     [Theory]
     [MemberData(nameof(ToHtmlTimeStampData))]
-    public void ToHtmlTimeStamp(DateTime value)
+    public void ToHtmlTimeStampDisplay(DateTime value)
     {
         // Arrange
 
         //  Act
-        IHtmlContent result = value.ToHtmlTimeStamp();
+        IHtmlContent result = value.ToHtmlTimeStampDisplay();
 
         //  Assert
         result.Should().BeHtml(value.ToString("g"));
     }
 
     [Fact]
-    public void ToHtmlTimeStamp_Null()
+    public void ToHtmlTimeStampDisplay_Null()
     {
         // Arrange
 
         //  Act
-        IHtmlContent result = AspNetCore.Rendering.Extensions.ToHtmlTimeStamp(null);
+        IHtmlContent result = AspNetCore.Rendering.Extensions.ToHtmlTimeStampDisplay(null);
 
         //  Assert
         result.Should().BeHtml("");
@@ -114,24 +178,24 @@ public class ExtensionsTests
 
     [Theory]
     [AutoData]
-    public void ToHtmlPrice(decimal value)
+    public void ToHtmlPriceDisplay(decimal value)
     {
         //  Arrange
 
         //  Act
-        IHtmlContent result = value.ToHtmlPrice();
+        IHtmlContent result = value.ToHtmlPriceDisplay();
 
         //  Assert
         result.Should().BeHtml(value.ToString("c"));
     }
 
     [Fact]
-    public void ToHtmlPrice_Null()
+    public void ToHtmlPriceDisplay_Null()
     {
         //  Arrange
 
         //  Act
-        IHtmlContent result = AspNetCore.Rendering.Extensions.ToHtmlPrice(null);
+        IHtmlContent result = AspNetCore.Rendering.Extensions.ToHtmlPriceDisplay(null);
 
         //  Assert
         result.Should().BeHtml("");

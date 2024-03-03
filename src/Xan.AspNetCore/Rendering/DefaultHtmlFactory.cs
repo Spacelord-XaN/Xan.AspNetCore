@@ -72,7 +72,7 @@ public class DefaultHtmlFactory(IStringLocalizer stringLocalizer)
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(name);
         string stringValue = DateTimeToStringValue(value);
-        return Input("datetime-local", name, stringValue, autoFocus);
+        return Input("datetime-local", name, stringValue, autoFocus: autoFocus);
     }
 
     public virtual TagBuilder Div()
@@ -118,7 +118,7 @@ public class DefaultHtmlFactory(IStringLocalizer stringLocalizer)
 
         TagBuilder input = TagBuilder("input", name: name);
         input.Attributes.Add("type", type);
-        if (value != null)
+        if (value is not null)
         {
             input.Attributes.Add("value", value);
         }
@@ -146,8 +146,8 @@ public class DefaultHtmlFactory(IStringLocalizer stringLocalizer)
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(name);
 
-        string stringValue = value.ToString(CultureInfo.InvariantCulture);
-        return Input("number", name, stringValue, autoFocus);
+        string stringValue = value.ToString();
+        return Input("text", name, stringValue, autoFocus);
     }
 
     public virtual IInputBuilder NumberInput(string name, double value, bool autoFocus = false)
@@ -155,8 +155,8 @@ public class DefaultHtmlFactory(IStringLocalizer stringLocalizer)
         ArgumentNullException.ThrowIfNull(value);
         ArgumentNullException.ThrowIfNull(name);
 
-        string stringValue = value.ToString(CultureInfo.InvariantCulture);
-        return Input("number", name, stringValue, autoFocus);
+        string stringValue = value.ToString();
+        return Input("text", name, stringValue, autoFocus);
     }
 
     public virtual IInputBuilder NumberInput(string name, decimal value, bool autoFocus = false)
@@ -182,7 +182,7 @@ public class DefaultHtmlFactory(IStringLocalizer stringLocalizer)
     {
         ArgumentNullException.ThrowIfNull(name);
 
-        return Input("password", name, value, autoFocus);
+        return Input("password", name, value, autoFocus: autoFocus);
     }
 
     public virtual IInputBuilder Select(string name, string? value, SelectList items, bool submitOnChange = false, bool autoFocus = false)
@@ -290,7 +290,7 @@ public class DefaultHtmlFactory(IStringLocalizer stringLocalizer)
     {
         ArgumentNullException.ThrowIfNull(name);
 
-        return Input("text", name, value, autoFocus);
+        return Input("text", name, value, autoFocus: autoFocus);
     }
 
     public virtual TagBuilder TFoot()
@@ -308,7 +308,7 @@ public class DefaultHtmlFactory(IStringLocalizer stringLocalizer)
         ArgumentNullException.ThrowIfNull(name);
 
         string stringValue = value.ToString("HH:mm");
-        return Input("time", name, stringValue, autoFocus);
+        return Input("time", name, stringValue, autoFocus: autoFocus);
     }
 
     public virtual TagBuilder Tr()
@@ -328,7 +328,7 @@ public class DefaultHtmlFactory(IStringLocalizer stringLocalizer)
     }
 
     private IInputBuilder DateInput(string name, string stringValue, bool autoFocus)
-       => Input("date", name, stringValue, autoFocus);
+       => Input("date", name, stringValue, autoFocus: autoFocus);
 
     private static string DateTimeToStringValue(DateTime value)
         => value.ToString("yyyy-MM-ddTHH:mm");
