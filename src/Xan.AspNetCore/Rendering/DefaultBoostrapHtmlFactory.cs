@@ -244,20 +244,11 @@ public class DefaultBoostrapHtmlFactory(IStringLocalizer localizer)
 
     public IHtmlContent TitleCardHeader()
     {
-        string? title = ViewContext.ViewData.Title();
-        IHtmlContent htmlTitle;
-        if (title != null)
-        {
-            htmlTitle = title.ToHtmlDisplay();
-        }
-        else
-        {
-            htmlTitle = new HtmlString("");
-        }
+        LocalizedString title = ViewContext.ViewData.Title();
 
         TagBuilder heading = Heading(4);
         heading.AddCssClass("card-header");
-        heading.InnerHtml.SetHtmlContent(htmlTitle);
+        heading.InnerHtml.SetHtmlContent(title);
         return heading;
     }
 
