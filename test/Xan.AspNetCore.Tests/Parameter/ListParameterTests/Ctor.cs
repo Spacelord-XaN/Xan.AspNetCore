@@ -19,7 +19,7 @@ public class Ctor
             parameter.SearchString.Should().BeNull();
             parameter.PageIndex.Should().Be(1);
             parameter.PageSize.Should().BeNull();
-            parameter.State.Should().Be(ObjectState.Enabled);
+            parameter.State.Should().BeNull();
         }
     }
 
