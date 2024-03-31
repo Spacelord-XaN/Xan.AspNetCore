@@ -101,7 +101,7 @@ public class OnActionExecuting
 
     [Theory]
     [AutoData]
-    public void HasParameterWihtoutPageSize_HasPageSizeInRouteData_CookieIsNotSet_ShouldSetParameterToDefault(string argumentName, ListParameter parameter, int pageSizeInRoute, int pageSizeInCookies)
+    public void HasParameterWihtoutPageSize_HasPageSizeInRouteData_CookieIsNotSet_ShouldSetParameterToDefault(string argumentName, ListParameter parameter, int pageSizeInRoute)
     {
         //  Arrange
         parameter.PageSize = null;

@@ -15,9 +15,9 @@ public class SelectByIdAsync
         await Db.SaveChangesAsync();
 
         //  Act
-        string resutl = await Db.TestEntities.SelectByIdAsync(toFind.Id, entity => entity.Name);
+        string? result = await Db.TestEntities.SelectByIdAsync(toFind.Id, entity => entity.Name);
 
         //  Assert
-        resutl.Should().Be(toFind.Name);
+        result.Should().Be(toFind.Name);
     }
 }
