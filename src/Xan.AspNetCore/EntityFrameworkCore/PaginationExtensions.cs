@@ -32,11 +32,11 @@ public static class PaginationExtensions
         }
 
         int totalItemCount = await iq.CountAsync();
-        int totalPageCount = IPaginatedList.CalcTotalPages(totalItemCount, pageSize);
+        int totalPageCount = IPaginated.CalcTotalPages(totalItemCount, pageSize);
         pageIndex = Math.Min(pageIndex, Math.Max(1, totalPageCount));
 
         IQueryable<TSource> paginatedIq = iq;
-        if (pageSize != IPaginatedList.AllPageSize)
+        if (pageSize != IPaginated.AllPageSize)
         {
             int skipCount = Math.Max(pageIndex - 1, 0) * pageSize;
             paginatedIq = iq.Skip(skipCount).Take(pageSize);

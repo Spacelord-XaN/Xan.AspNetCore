@@ -92,7 +92,7 @@ public sealed class PaginationModel(IPaginatedList items, ListParameter currentP
     {
         yield return 5;
         yield return 10;
-        yield return IPaginatedList.AllPageSize;
+        yield return IPaginated.AllPageSize;
     }
 
     public IPaginatedList Items { get; } = items ?? throw new ArgumentNullException(nameof(items));
